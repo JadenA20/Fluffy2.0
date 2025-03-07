@@ -1,18 +1,51 @@
-## Getting Started
+# The Fluffy2.0 Repository
+Fluffy2.0 is a repository for a software system developed for the Sole Trader business, Fluffy's Sweet Treats. The software will focus on Order, Inventory and Customer Management for the business. 
+Additionally, this project is related to COMP2171, a course offered by The University of the West Indies.
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+# Background on Fluffy's Sweet Treats
+Fluffy’s Sweet Treats was started by Marcelle Reid in 2016. She operates in Kingston, Jamaica, and primarily specializes in cakes for her clients. Her clients request orders through Instagram, WhatsApp, or by Email.
 
-## Folder Structure
+Currently, she utilises multiple devices to keep track of her orders; such as her phone for confirmation of deposits and ingredients currently in stock, and Microsoft Excel
+for specific requirements and prices for an order. She expressed that a system that would allow her to have all details in one place would be best suited for her business.
 
-The workspace contains two folders by default, where:
+# User Requirements
+The user requirements for the Fluffy's Sweet Treats Software are as follows:
+1. Login User
+  - The system shall prompt the user to login in order to access any features within the Fluffy's Sweet Treats System.
+    - Team Author: Jaden Anthony
+         
+2. View Orders
+- The system shall allow the user to view a list of current orders, as well as sort the list at their discretion.
+  - Team Author: Jaden Anthony
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+3. Create Order
+- The system shall allow the user to create a new order invoice.
+  - Team Author: Dana Archer
+  
+4. Edit Order
+- The system shall allow the user to edit current orders.
+  - Team Author: Dana Archer
+  
+5. Cancel Order
+- The system shall allow an authorised user to cancel (and therefore, delete) selected current orders.
+  - Team Author: Tara-Lee Donald
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+6. View Inventory Records
+- The system shall allow the user to view inventory items.
+  - Team Author: Jaden Anthony
+  
+7. Create Inventory Record
+- The system shall allow the user to create records of inventory items.
+  - Team Author: Dana Archer
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+8. Edit Inventory Record
+- The system shall allow the user to edit existing inventory records.
+  - Team Author: Khanez Wallace
+  
+9. Delete Inventory Record
+- The system shall allow an authorised user to delete existing inventory records.
+  - Team Author: Jada-kay Williams
 
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+10. View Customers
+- The system shall allow the user to view a list of customers, as well as sort the list at their discretion.
+  - Team Author: Jaden Anthony

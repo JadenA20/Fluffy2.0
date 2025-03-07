@@ -14,7 +14,8 @@ public class LoginUI extends JFrame {
 
     private JButton login, exit, register;
     private JLabel title, usernameLabel, passwordLabel, registerLabel;
-    private JTextField usernameField, passwordField;
+    private JTextField usernameField;
+    private JPasswordField pwordField;
     private JPanel mainPanel, optionPanel;
 
     public LoginUI() {
@@ -73,14 +74,20 @@ public class LoginUI extends JFrame {
         register.setFont(ver1);
 
 
-        //Instantiation of TextFields
+        //Instantiation of TextField
         usernameField = new JTextField(20);
         usernameField.setBounds(20, 140, 200, 30);
         usernameField.setBackground(new Color(244, 235, 220));
 
-        passwordField = new JTextField(20);
-        passwordField.setBounds(20, 210, 200, 30);
-        passwordField.setBackground(new Color(244, 235, 220));
+        //Instantiation of PasswordField
+
+        pwordField = new JPasswordField(20);
+        pwordField.setBounds(20, 210, 200, 30);
+        pwordField.setBackground(new Color(244, 235, 220));
+        pwordField.setEchoChar('*');
+        
+       
+        
 
 
         //Instantiation of Panels
@@ -100,7 +107,7 @@ public class LoginUI extends JFrame {
         mainPanel.add(usernameLabel);
         mainPanel.add(usernameField);
         mainPanel.add(passwordLabel);
-        mainPanel.add(passwordField);
+        mainPanel.add(pwordField);
         mainPanel.add(registerLabel);
         mainPanel.add(login);
         mainPanel.add(register);
@@ -126,7 +133,7 @@ public class LoginUI extends JFrame {
             if(e.getSource() == login){
                 //Get username and password
                 String username = usernameField.getText();
-                String password = passwordField.getText();
+                String password = new String(pwordField.getPassword());
 
                 if((username.equals("")) || (password.equals(""))){
                     /// Error message

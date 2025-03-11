@@ -1,22 +1,22 @@
 //Last Modified: March 6, 2025
 
-package Login;
+package Security;
 import java.util.ArrayList;
-import database.UserDatabaseController;
+
+import Database.UserTableController;
 
 public class LoginController {
     
     //Verifies and validates a Baker's login credentials
     public Boolean login(String userName, String password){
         Boolean verified = false;
-        String loginDetails = userName + ":" + password;
-        String query = "SELECT Username, Password FROM Users";
-        UserDatabaseController conn = new UserDatabaseController();
+        String query = "SELECT * FROM Users";
+        UserTableController conn = new UserTableController();
 
-        ArrayList<String> users = conn.executeQuery(query);
+        ArrayList<Baker> bakers = conn.getBakers(query);
 
-        for(String user: users){
-            if (loginDetails.equals(user)){
+        for(Baker b: bakers){
+            if ((b.getUserName().equals(userName)) && (b.getPassword().equals(password))){
                 verified = true;
             }
 

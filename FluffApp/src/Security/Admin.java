@@ -1,4 +1,4 @@
-package Login;
+package Security;
 
 public class Admin extends Baker{
     private int passKey;

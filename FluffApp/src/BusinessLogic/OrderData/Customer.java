@@ -1,4 +1,4 @@
-package Order;
+package BusinessLogic.OrderData;
 import java.util.ArrayList;
 
 public class Customer {

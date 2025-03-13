@@ -1,7 +1,7 @@
 //Last Modified: March 11th, 2025
 
 package Security;
-import database.UserTableController;
+import Database.UserTableController;
 import java.util.ArrayList;
 
 public class LoginController {

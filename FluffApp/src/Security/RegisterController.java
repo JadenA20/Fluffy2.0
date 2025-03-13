@@ -1,5 +1,5 @@
 package Security;
-import database.UserTableController;
+import Database.UserTableController;
 import java.util.*;
 
 public class RegisterController {

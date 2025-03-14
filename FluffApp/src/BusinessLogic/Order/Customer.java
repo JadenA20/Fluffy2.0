@@ -2,14 +2,15 @@ package Order;
 import java.util.ArrayList;
 
 public class Customer {
-    private String fname, lname, phone, address;
+    private String fname, lname, phone, address, method;
     private ArrayList<Order> orders = new ArrayList<Order>();
 
-    public Customer(String fname, String lname, String phone, String address){
+    public Customer(String fname, String lname, String phone, String address, String method){
         this.fname = fname;
         this.lname = lname;
         this.phone = phone;
         this.address = address;
+        this.method = method;
     }
 
     public void addOrder(Order order){
@@ -28,8 +29,12 @@ public class Customer {
         this.phone = phone;
     }
 
-    public void address(String address){
+    public void setAddress(String address){
         this.address = address;
+    }
+
+    public void setMethod(String contact){
+        this.method = contact;
     }
 
     public String getFname(){
@@ -40,21 +45,21 @@ public class Customer {
         return this.lname;
     }
 
-    public String name(){
+    public String getName(){
         return this.fname + " " + this.lname;
     }
-
-
 
     public String getPhone(){
         return this.phone;
     }
 
-    public String address(){
+    public String getAddress(){
         return this.address;
     }
 
-
+    public String getMethod(){
+        return method;
+    }
 
 
 }

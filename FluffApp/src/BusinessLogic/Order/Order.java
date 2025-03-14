@@ -7,14 +7,15 @@ public class Order {
     private Customer customer;
     private int iD;
     private static int count = 1;
+
     private float price;
     private String desc, event, date_cr, date_cmp = " ";
     private Boolean open = true;
     private String payStat;
 
 
-    public Order (Customer customer, float price, String desc, String event, String date_cr, String payStat){
-        this.customer = customer;
+    public Order (Customer customer, String flavour,float price, String desc, String note,String event, String date_cr, String date_comp, String payStat){
+
         this.iD = count;
         this.price = price;
         this.desc = desc;

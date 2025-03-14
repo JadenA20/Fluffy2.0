@@ -1,4 +1,4 @@
-package database;
+package Database;
 
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -83,21 +83,6 @@ import Security.*;
 
     }
     
-    public void addOrder(String query){
-
-        int rowsAffected = 0;
-
-        try{
-            Connection connection = DriverManager.getConnection(url, user, password);
-            Statement stmt = connection.createStatement();
-            rowsAffected = stmt.executeUpdate(query);
-            stmt.close();
-            connection.close();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
+   
 
 }

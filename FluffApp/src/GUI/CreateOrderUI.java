@@ -187,10 +187,10 @@ public class CreateOrderUI extends JFrame{
 
                     OrderController Controls = new OrderController();
 
-                    Customer customer = new Customer(firstName, lastName, teleNum, addr, method);
-                    Order order = new Order(customer, flav, priceAmt, description, add_notes, eventType, datecr, date comp, pay);
+                    //Customer customer = new Customer(firstName, lastName, teleNum, addr, method);
+                    //rder order = new Order(customer, flav, priceAmt, description, add_notes, eventType, datecr, dateomp, pay);
 
-                    Controls.entryValidity();
+                    //Controls.entryValidity();
                 }
                 catch(NumberFormatException nfe){
 

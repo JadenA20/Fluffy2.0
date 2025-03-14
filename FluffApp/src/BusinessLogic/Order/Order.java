@@ -1,33 +1,38 @@
-package Order;
+package BusinessLogic.Order;
 import java.time.*;
 
 
 public class Order {
     // Order class
-    private Customer customer;
     private int iD;
-    private static int count = 1;
-
+    private Customer customer;
     private float price;
-    private String desc, event, date_cr, date_cmp = " ";
-    private Boolean open = true;
+    private String desc, event, specialNote, deadline, date_cr, date_cmp, deliveryAddress;
+    private Boolean status;
     private String payStat;
 
 
-    public Order (Customer customer, String flavour,float price, String desc, String note,String event, String date_cr, String date_comp, String payStat){
+    public Order (int iD, Customer customer, String flavour,float price, String desc, String note,String event, String date_cr, String date_comp, String payStat){
 
-        this.iD = count;
-        this.price = price;
+        this.iD = iD;
+        this.customer = customer;
         this.desc = desc;
         this.event = event;
-        this.date_cr = getCurrentDate();
+        this.specialNote = specialNote;
+        this.deliveryAddress = deliveryAddress;
+        this.price = price;
         this.payStat = payStat;
-        count++;
-
+        this.deadline = deadline;
+        this.status = status;
+        this.date_cr = date_cr;
+        this.date_cmp = date_comp;
+        
+        
+        
     }
 
     public void setStatus(){
-        this.open = false;
+        this.status = false;
         this.date_cmp = getCurrentDate();
 
         if (this.payStat != "Complete"){
@@ -87,7 +92,7 @@ public class Order {
     }
 
     public boolean isOpen(){
-        if(this.open == true){
+        if(this.status == true){
             return true;
         }
         else{

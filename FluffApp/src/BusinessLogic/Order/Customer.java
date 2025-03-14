@@ -22,6 +22,10 @@ public class Customer {
         orders.add(order);
     }*/
 
+    public String toString() {
+        return "Customer{id=" + this.iD + ", name='" + getName() + "', email='}";
+    }
+
     public void setFname(String fName){
         this.fname = fName;
     }

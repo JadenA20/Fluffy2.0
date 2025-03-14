@@ -53,12 +53,12 @@ public class CreateOrderUI extends JFrame{
         lname.setForeground(bgColor);
         entryPanel.add(lname);
 
-        addrLabel = new JLabel("Address:");
+        /*addrLabel = new JLabel("Address:");
         addrLabel.setFont(ver3);
         addrLabel.setForeground(bgColor);
         entryPanel.add(addrLabel);
         address = new JTextField(50);
-        entryPanel.add(address);
+        entryPanel.add(address);*/
 
         phoneLabel = new JLabel("Telephone Number:");
         phoneLabel.setFont(ver3);
@@ -175,7 +175,7 @@ public class CreateOrderUI extends JFrame{
                 try{
                     String firstName = fname.getText().trim();
                     String lastName = lname.getText().trim();
-                    String addr = address.getText().trim();
+                    //String addr = address.getText().trim();
                     String teleNum = phone.getText().trim();
                     String flav = flavour.getText().trim();
                     String eventType = event.getText().trim();
@@ -184,11 +184,16 @@ public class CreateOrderUI extends JFrame{
                     String add_notes = addNote.getText().trim();
                     String method = contactField.getText().trim();
                     String destination = delivery.getText().trim();
+                    String payStatus = (String) paystat.getSelectedItem();
+                    String deadline = dueDate.getText();
 
                     OrderController Controls = new OrderController();
+                    Boolean success = Controls.createOrder(firstName, lastName, teleNum, flav, eventType, deadline, priceAmt, description, add_notes, method, destination, payStatus);
 
-                    //Customer customer = new Customer(firstName, lastName, teleNum, addr, method);
-                    //rder order = new Order(customer, flav, priceAmt, description, add_notes, eventType, datecr, dateomp, pay);
+                    if(success == true){
+                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        CreateOrderUI.this.setVisible(false);
+                    }
 
                     //Controls.entryValidity();
                 }

@@ -18,7 +18,7 @@ public class OrderController{
         Customer customer = new Customer();
         String query = "SELECT * FROM Customers"; // Create query to get customers
         customers = new CustomerTableController().getCustomers(query); // Get customer list
-        System.out.println(customers);
+        //System.out.println(customers);
         String custName = fname + " " + lname; // Name of customer
         
         for(Customer c: customers){
@@ -30,7 +30,7 @@ public class OrderController{
         }
 
         if(custExists){
-            System.out.println(customer.toString());
+            //System.out.println(customer.toString());
             String query1 =  String.format("INSERT INTO Orders (CustomerID, Flavour, Description, Event, Note, Address, Deadline, Price, Status, PayStatus, Date_Created) VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', %.2f, %d, '%s', CURRENT_DATE())", customer.getID(), flav, desc, event, note, deliveryAdrr, deadline, price, 0, payStat);
             OrderTableController conn = new OrderTableController();
             if(conn.addOrder(query1)){

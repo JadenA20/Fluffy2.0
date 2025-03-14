@@ -3,11 +3,14 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import BusinessLogic.Order.*;
+import java.util.*;
 
 public class OrderTableController {
     private String url = "jdbc:mysql://127.0.0.1:3306/fluffy_schema";
     private String user = "root";
     private String password = "fluffySweet2025!";
+    private ArrayList<Order> orders;
 
 
 

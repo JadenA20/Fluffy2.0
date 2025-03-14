@@ -21,6 +21,7 @@ public class RegisterUI extends JFrame{
     private HomeUI HomeUI;
 
     public RegisterUI(HomeUI HomeUI, LoginUI LoginUI){
+        this.HomeUI = HomeUI;
 
         //Set Panel Title
         setTitle("Register Baker");
@@ -234,6 +235,10 @@ public class RegisterUI extends JFrame{
                             RegisterController conn = new RegisterController();
                             conn.registerBaker(first, last, user, pass);
                             JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
+                            RegisterUI.this.setVisible(false);
+                            HomeUI.setVisible(true);
+
+                            
     
                         }
                         else {

@@ -246,6 +246,9 @@ public class RegisterUI extends JFrame{
                             RegisterController conn = new RegisterController();
                             conn.registerAdmin(first, last, user, pass);
                             JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
+                            RegisterUI.this.setVisible(false);
+                            HomeUI.setVisible(true);
+
 
                         }
                         

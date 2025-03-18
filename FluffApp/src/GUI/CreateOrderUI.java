@@ -16,8 +16,10 @@ public class CreateOrderUI extends JFrame{
     private String[] paymentStat= {"Pending","Deposited","Completed"};
     private Color bgColor = new Color(100, 67, 59);
     private String pay = "Pending";
+    private ViewOrdersUI view;
 
-    public CreateOrderUI(){
+    public CreateOrderUI(ViewOrdersUI view){
+        this.view = view;
 
         setBackground(new Color(244, 235, 220));
 
@@ -193,6 +195,7 @@ public class CreateOrderUI extends JFrame{
                     if(success == true){
                         JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
                         CreateOrderUI.this.setVisible(false);
+                        view.setVisible(true);
                     }
 
                     //Controls.entryValidity();
@@ -219,12 +222,9 @@ public class CreateOrderUI extends JFrame{
 
             else{
                 setVisible(false);
+                view.setVisible(true);
             }
         }
-    }
-
-    public static void main(String args[]){
-        new CreateOrderUI();
     }
 
 }

@@ -16,8 +16,10 @@ public class CreateOrderUI extends JFrame{
     private String[] paymentStat= {"Pending","Deposited","Completed"};
     private Color bgColor = new Color(100, 67, 59);
     private String pay = "Pending";
+    private ViewOrdersUI view;
 
-    public CreateOrderUI(){
+    public CreateOrderUI(ViewOrdersUI view){
+        this.view = view;
 
         setBackground(new Color(244, 235, 220));
 
@@ -53,12 +55,12 @@ public class CreateOrderUI extends JFrame{
         lname.setForeground(bgColor);
         entryPanel.add(lname);
 
-        addrLabel = new JLabel("Address:");
+        /*addrLabel = new JLabel("Address:");
         addrLabel.setFont(ver3);
         addrLabel.setForeground(bgColor);
         entryPanel.add(addrLabel);
         address = new JTextField(50);
-        entryPanel.add(address);
+        entryPanel.add(address);*/
 
         phoneLabel = new JLabel("Telephone Number:");
         phoneLabel.setFont(ver3);
@@ -141,13 +143,13 @@ public class CreateOrderUI extends JFrame{
 
         addOrder = new JButton("Add Order");
         addOrder.setBackground(bgColor);
-        addOrder.setForeground(new Color(255,255,255,0));
+        addOrder.setForeground(new Color(255,255,255));
         addOrder.setFont(ver1);
         addOrder.setBounds(20, 260, 100, 50);
 
         cancelOrder = new JButton("Cancel");
         cancelOrder.setBackground(bgColor);
-        cancelOrder.setForeground(new Color(255,255,255,0));
+        cancelOrder.setForeground(new Color(255,255,255));
         cancelOrder.setFont(ver1);
         cancelOrder.setBounds(20, 260, 100, 50);
 
@@ -175,7 +177,7 @@ public class CreateOrderUI extends JFrame{
                 try{
                     String firstName = fname.getText().trim();
                     String lastName = lname.getText().trim();
-                    String addr = address.getText().trim();
+                    //String addr = address.getText().trim();
                     String teleNum = phone.getText().trim();
                     String flav = flavour.getText().trim();
                     String eventType = event.getText().trim();
@@ -184,13 +186,19 @@ public class CreateOrderUI extends JFrame{
                     String add_notes = addNote.getText().trim();
                     String method = contactField.getText().trim();
                     String destination = delivery.getText().trim();
+                    String payStatus = (String) paystat.getSelectedItem();
+                    String deadline = dueDate.getText();
 
                     OrderController Controls = new OrderController();
+                    Boolean success = Controls.createOrder(firstName, lastName, teleNum, flav, eventType, deadline, priceAmt, description, add_notes, method, destination, payStatus);
 
-                    Customer customer = new Customer(firstName, lastName, teleNum, addr, method);
-                    Order order = new Order(customer, flav, priceAmt, description, add_notes, eventType, datecr, date comp, pay);
+                    if(success == true){
+                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        CreateOrderUI.this.setVisible(false);
+                        view.setVisible(true);
+                    }
 
-                    Controls.entryValidity();
+                    //Controls.entryValidity();
                 }
                 catch(NumberFormatException nfe){
 
@@ -214,12 +222,9 @@ public class CreateOrderUI extends JFrame{
 
             else{
                 setVisible(false);
+                view.setVisible(true);
             }
         }
-    }
-
-    public static void main(String args[]){
-        new CreateOrderUI();
     }
 
 }

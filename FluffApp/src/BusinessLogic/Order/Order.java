@@ -7,18 +7,19 @@ public class Order {
     private int iD;
     private Customer customer;
     private float price;
-    private String desc, event, specialNote, deadline, date_cr, date_cmp, deliveryAddress;
+    private String desc, event, flavour, specialNote, deadline, date_cr, date_cmp, deliveryAddress;
     private Boolean status;
     private String payStat;
 
 
-    public Order (int iD, Customer customer, String flavour,float price, String desc, String note,String event, String date_cr, String date_comp, String payStat){
+    public Order (int iD, Customer customer, String flavour,float price, String desc, String note,String event, String deliveryAddress, String deadline, String date_cr, String date_comp, String payStat, Boolean status){
 
         this.iD = iD;
         this.customer = customer;
         this.desc = desc;
+        this.flavour = flavour;
         this.event = event;
-        this.specialNote = specialNote;
+        this.specialNote = note;
         this.deliveryAddress = deliveryAddress;
         this.price = price;
         this.payStat = payStat;
@@ -26,6 +27,7 @@ public class Order {
         this.status = status;
         this.date_cr = date_cr;
         this.date_cmp = date_comp;
+        this.status = status;
         
         
         
@@ -57,6 +59,38 @@ public class Order {
     public void setPrice(float p){
         this.price = p;
     }
+
+    public String getEvent(){
+        return this.event;
+
+    }
+
+    public String getFlavour(){
+        return this.flavour;
+
+    }
+
+    public String getNotes(){
+        return this.specialNote;
+
+    }
+
+    public String getDescription(){
+        return this.desc;
+
+    }
+
+    public String getDeadline(){
+        return this.deadline;
+
+    }
+
+    public String getPayStat(){
+        return this.payStat;
+
+    }
+
+
 
     public String getCurrentDate(){
         LocalDate date = LocalDate.now();
@@ -98,6 +132,10 @@ public class Order {
         else{
             return false;
         }
+    }
+
+    public String toString() {
+        return "Order{id=" + this.iD + ", cust='" + getCustomer() + "', email='}";
     }
 
 

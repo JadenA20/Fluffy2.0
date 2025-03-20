@@ -25,6 +25,7 @@ public class HomeUI extends JFrame {
         login = LoginUI;
        
        //Set Panel Title
+       
        setTitle("Home Screen");
         
        //Set Fonts
@@ -44,7 +45,7 @@ public class HomeUI extends JFrame {
         displayPanel.setLayout(new FlowLayout());
         
 
-        title = new JLabel("HOME SCREEN");                               
+        title = new JLabel("Welcome " + login.getCurrentUser().getFName() + "!!!");                               
         title.setForeground(new Color(100, 67, 59));
         title.setFont(ver3);
         title.setBounds(30, 50, 300, 50);

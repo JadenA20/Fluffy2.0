@@ -1,8 +1,14 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import BusinessLogic.Order.Order;
+import BusinessLogic.Order.OrderController;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class ViewOrdersUI extends JFrame{
 
@@ -55,6 +61,8 @@ public class ViewOrdersUI extends JFrame{
         paymentStatus = new JLabel("Payment Status: "); //JLabel 7
         paymentStatus.setFont(new Font("Courier New", 1, 14)); // NOI18N
         paymentStatus.setForeground(new Color(100, 67, 59));
+        paymentStatus.setPreferredSize(new Dimension(200, 30)); // Adjust width as needed
+
     
 
         status = new JLabel("Status: "); //JLabel 8
@@ -82,10 +90,12 @@ public class ViewOrdersUI extends JFrame{
         //Instantiate ComboBox
         payBox = new JComboBox(); //1
         payBox.setForeground(new Color(100, 67, 59));
+        payBox.setFont(new Font("Courier New", 1, 14));
         payBox.setModel(new DefaultComboBoxModel<>(new String[] { "Pending", "Deposit", "Complete"}));
 
         statusBox = new JComboBox<>(); //3
         statusBox.setForeground(new Color(100, 67, 59));
+        statusBox.setFont(new Font("Courier New", 1, 14));
         statusBox.setModel(new DefaultComboBoxModel<>(new String[] { "Open", "Complete"}));
 
 
@@ -166,14 +176,7 @@ public class ViewOrdersUI extends JFrame{
         ordersTable.setForeground(new Color(100, 67, 59));
         ordersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
+          },
             new String [] {
                 "ID", "Customer", "Event", "Flavour", "Description", "Notes", "Price", "PayStat", "Deadline"
             }
@@ -249,7 +252,7 @@ public class ViewOrdersUI extends JFrame{
                                                 .addComponent(payBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(orderID, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(orderID, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGap(5, 5, 5)
                                                         .addComponent(iDfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -260,7 +263,7 @@ public class ViewOrdersUI extends JFrame{
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(paymentStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(paymentStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(priceField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,17 +297,8 @@ public class ViewOrdersUI extends JFrame{
                         .addGap(65, 65, 65))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(title)
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(description)
-                    .addComponent(paymentStatus))
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(18, 18, 18).addComponent(title).addGap(34, 34, 34).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(description).addComponent(paymentStatus)).addGap(4, 4, 4).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -352,6 +346,8 @@ public class ViewOrdersUI extends JFrame{
                     .addComponent(exit))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        addToTable();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setSize(new Dimension(550, 400));
@@ -362,6 +358,27 @@ public class ViewOrdersUI extends JFrame{
 
 
 
+
+    }
+
+    public void addToTable(){
+        DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
+        model.setRowCount(0);
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders = new OrderController().viewCurrentOrders();
+        Object rowData[] = new Object[9];
+        for(Order o: orders){
+            rowData[0] = o.getID();
+            rowData[1] = o.getCustomer().getName();
+            rowData[2] = o.getEvent();
+            rowData[3] = o.getFlavour();
+            rowData[4] = o.getDescription();
+            rowData[5] = o.getNotes();
+            rowData[6] = o.getPrice();
+            rowData[7] = o.getPayStat();
+            rowData[8] = o.getDeadline();
+            model.addRow(rowData);
+        }
 
     }
 

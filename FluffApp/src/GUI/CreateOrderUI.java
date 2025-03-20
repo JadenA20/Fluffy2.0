@@ -44,6 +44,8 @@ public class CreateOrderUI extends JFrame{
         nameLabel1.setForeground(bgColor);
         entryPanel.add(nameLabel1);
         fname = new JTextField(50);
+        fname.setFont(ver3);
+        fname.setForeground(bgColor);
         entryPanel.add(fname);
 
         nameLabel2 = new JLabel("Last Name:");
@@ -67,6 +69,8 @@ public class CreateOrderUI extends JFrame{
         phoneLabel.setForeground(bgColor);
         entryPanel.add(phoneLabel);
         phone = new JTextField(10);
+        phone.setFont(ver3);
+        phone.setForeground(bgColor);
         entryPanel.add(phone);
 
         contactLabel = new JLabel("Contact Method (Eg: WhatsApp, Email, Instagram):");
@@ -74,6 +78,8 @@ public class CreateOrderUI extends JFrame{
         contactLabel.setForeground(bgColor);
         entryPanel.add(contactLabel);
         contactField = new JTextField(15);
+        contactField.setFont(ver3);
+        contactField.setForeground(bgColor);
         entryPanel.add(contactField);
 
         dueDateLabel = new JLabel("Deadline (format: yyyy-mm-dd):");
@@ -81,6 +87,8 @@ public class CreateOrderUI extends JFrame{
         dueDateLabel.setForeground(bgColor);
         entryPanel.add(dueDateLabel);
         dueDate = new JTextField(15);
+        dueDate.setFont(ver3);
+        dueDate.setForeground(bgColor);
         entryPanel.add(dueDate);
 
         eventLabel = new JLabel("Event (Anniversary, Birthday etc.):");
@@ -88,6 +96,8 @@ public class CreateOrderUI extends JFrame{
         eventLabel.setForeground(bgColor);
         entryPanel.add(eventLabel);
         event = new JTextField(20);
+        event.setFont(ver3);
+        event.setForeground(bgColor);
         entryPanel.add(event);
 
         flavourLabel = new JLabel("Flavour:");
@@ -95,6 +105,8 @@ public class CreateOrderUI extends JFrame{
         flavourLabel.setForeground(bgColor);
         entryPanel.add(flavourLabel);
         flavour = new JTextField(20);
+        flavour.setFont(ver3);
+        flavour.setForeground(bgColor);
         entryPanel.add(flavour);
 
         descLabel = new JLabel("Description:");
@@ -102,6 +114,8 @@ public class CreateOrderUI extends JFrame{
         descLabel.setForeground(bgColor);
         entryPanel.add(descLabel);
         desc = new JTextArea(3,40);
+        desc.setFont(ver3);
+        desc.setForeground(bgColor);
         desc.setLineWrap(true);
         desc.setWrapStyleWord(true);
         entryPanel.add(desc);
@@ -111,6 +125,8 @@ public class CreateOrderUI extends JFrame{
         priceLabel.setForeground(bgColor);
         entryPanel.add(priceLabel);
         price = new JTextField(10);
+        price.setFont(ver3);
+        price.setForeground(bgColor);
         entryPanel.add(price);
 
         deliLabel = new JLabel("Delivery Destination:");
@@ -118,6 +134,8 @@ public class CreateOrderUI extends JFrame{
         deliLabel.setForeground(bgColor);
         entryPanel.add(deliLabel);
         delivery = new JTextField(30);
+        delivery.setFont(ver3);
+        delivery.setForeground(bgColor);
         entryPanel.add(delivery);
 
         addNoteLabel = new JLabel("Additional Notes:");
@@ -125,6 +143,8 @@ public class CreateOrderUI extends JFrame{
         addNoteLabel.setForeground(bgColor);
         entryPanel.add(addNoteLabel);
         addNote = new JTextArea(3,40);
+        addNote.setFont(ver3);
+        addNote.setForeground(bgColor);
         addNote.setLineWrap(true);
         addNote.setWrapStyleWord(true);
         entryPanel.add(addNote);
@@ -137,19 +157,21 @@ public class CreateOrderUI extends JFrame{
         paymentSelect.setBounds(50,50,130,15);
         paystat = new JComboBox<String>(paymentStat);
         paystat.setBounds(150,50,130,15);
+        paystat.setFont(ver3);
+        paystat.setForeground(bgColor);
         entryPanel.add(paymentSelect);
         entryPanel.add(paystat);
 
 
         addOrder = new JButton("Add Order");
         addOrder.setBackground(bgColor);
-        addOrder.setForeground(new Color(255,255,255,0));
+        addOrder.setForeground(new Color(255,255,255));
         addOrder.setFont(ver1);
         addOrder.setBounds(20, 260, 100, 50);
 
         cancelOrder = new JButton("Cancel");
         cancelOrder.setBackground(bgColor);
-        cancelOrder.setForeground(new Color(255,255,255,0));
+        cancelOrder.setForeground(new Color(255,255,255));
         cancelOrder.setFont(ver1);
         cancelOrder.setBounds(20, 260, 100, 50);
 
@@ -195,6 +217,7 @@ public class CreateOrderUI extends JFrame{
                     if(success == true){
                         JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
                         CreateOrderUI.this.setVisible(false);
+                        view.addToTable();
                         view.setVisible(true);
                     }
 

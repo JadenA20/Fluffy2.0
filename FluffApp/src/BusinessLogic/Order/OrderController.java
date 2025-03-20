@@ -85,5 +85,13 @@ public class OrderController{
 
     }
 
+
+    public ArrayList<Order> viewCurrentOrders(){
+        orders = new OrderTableController().getOrders("Select * From Orders Where Status = 0");
+        System.out.println(orders);
+
+        return orders;
+    }
+
    
 }

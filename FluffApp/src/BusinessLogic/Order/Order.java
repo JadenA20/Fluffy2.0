@@ -1,32 +1,40 @@
-package Order;
+package BusinessLogic.Order;
 import java.time.*;
 
 
 public class Order {
     // Order class
-    private Customer customer;
     private int iD;
-    private static int count = 1;
+    private Customer customer;
     private float price;
-    private String desc, event, date_cr, date_cmp = " ";
-    private Boolean open = true;
+    private String desc, event, flavour, specialNote, deadline, date_cr, date_cmp, deliveryAddress;
+    private Boolean status;
     private String payStat;
 
 
-    public Order (Customer customer, float price, String desc, String event, String date_cr, String payStat){
-        this.customer = customer;
-        this.iD = count;
-        this.price = price;
-        this.desc = desc;
-        this.event = event;
-        this.date_cr = getCurrentDate();
-        this.payStat = payStat;
-        count++;
+    public Order (int iD, Customer customer, String flavour,float price, String desc, String note,String event, String deliveryAddress, String deadline, String date_cr, String date_comp, String payStat, Boolean status){
 
+        this.iD = iD;
+        this.customer = customer;
+        this.desc = desc;
+        this.flavour = flavour;
+        this.event = event;
+        this.specialNote = note;
+        this.deliveryAddress = deliveryAddress;
+        this.price = price;
+        this.payStat = payStat;
+        this.deadline = deadline;
+        this.status = status;
+        this.date_cr = date_cr;
+        this.date_cmp = date_comp;
+        this.status = status;
+        
+        
+        
     }
 
     public void setStatus(){
-        this.open = false;
+        this.status = false;
         this.date_cmp = getCurrentDate();
 
         if (this.payStat != "Complete"){
@@ -51,6 +59,38 @@ public class Order {
     public void setPrice(float p){
         this.price = p;
     }
+
+    public String getEvent(){
+        return this.event;
+
+    }
+
+    public String getFlavour(){
+        return this.flavour;
+
+    }
+
+    public String getNotes(){
+        return this.specialNote;
+
+    }
+
+    public String getDescription(){
+        return this.desc;
+
+    }
+
+    public String getDeadline(){
+        return this.deadline;
+
+    }
+
+    public String getPayStat(){
+        return this.payStat;
+
+    }
+
+
 
     public String getCurrentDate(){
         LocalDate date = LocalDate.now();
@@ -86,12 +126,16 @@ public class Order {
     }
 
     public boolean isOpen(){
-        if(this.open == true){
+        if(this.status == true){
             return true;
         }
         else{
             return false;
         }
+    }
+
+    public String toString() {
+        return "Order{id=" + this.iD + ", cust='" + getCustomer() + "', email='}";
     }
 
 

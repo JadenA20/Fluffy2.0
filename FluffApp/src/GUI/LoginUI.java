@@ -1,24 +1,30 @@
 package GUI;
 
+import Security.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import Security.*;
-
 
 public class LoginUI extends JFrame {
 
-    private JButton login, exit, register;
-    private JLabel title, usernameLabel, passwordLabel, registerLabel;
+    private JButton login, exit;
+    private JLabel title, usernameLabel, passwordLabel;
     private JTextField usernameField;
-    private JPasswordField pwordField;
-    private JPanel mainPanel, optionPanel;
+    private JPasswordField passwordField;
+    private JPanel mainPanel, breakPanel;
+    private LoginUI LoginUI;
+    private Baker currentUser = new Baker();
+
 
     public LoginUI() {
+
+        this.LoginUI = this;
 
         //Setting a title for the pop-up screen
         setTitle("Login Screen");
@@ -26,124 +32,131 @@ public class LoginUI extends JFrame {
         //Fonts
         Font ver1 = new Font("Courier New", Font.BOLD, 30);
         Font ver2 = new Font("Courier New", Font.BOLD, 20);
+        Font ver3 = new Font("Bradley Hand ITC", Font.BOLD, 30);
+
+        //Instantiation of MainPanel
+        mainPanel = new JPanel();
+        mainPanel.setBackground(new Color(255,255, 255, 180));
+        mainPanel.setBounds(0, 0, 600, 100);
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints con = new GridBagConstraints();
 
 
-        //Instantiation of Labels
-        title = new JLabel("FLUFFY'S SWEET TREATS");
+        //Instantiation and Addition of MainPanel Components
+        title = new JLabel("FLUFFY'S SWEET TREATS");                      //Panel Title
         title.setForeground(new Color(100, 67, 59));
-        title.setFont(ver1);
-        title.setBounds(100, 50, 300, 50);
+        title.setFont(ver3);
+        title.setBounds(30, 50, 300, 50);
+        con.gridwidth = con.REMAINDER;
+        con.gridx = 0;
+        con.gridy = 0;
+        con.ipady = 40;
+        mainPanel.add(title, con);
 
-        usernameLabel = new JLabel("Username:");
+
+        usernameLabel = new JLabel("Username:");                         //Username Label
         usernameLabel.setForeground(new Color(100, 67, 59));
         usernameLabel.setFont(ver1);
-        usernameLabel.setBounds(20, 100, 300, 50);
+        usernameLabel.setBounds(20, 170, 300, 50);
+        con.gridwidth = 1;
+        con.gridx = 0;
+        con.gridy = 1;
+        con.ipady = 0;
+        mainPanel.add(usernameLabel, con);
 
-        passwordLabel = new JLabel("Password:");
+
+        usernameField = new JTextField(20);                           //Username Textfield
+        usernameField.setBounds(20, 210, 200, 30);
+        usernameField.setBackground(new Color(244, 235, 220));
+        con.gridx = 1;
+        con.gridy = 1;
+        mainPanel.add(usernameField, con);
+
+ 
+        passwordLabel = new JLabel("Password:");                         //Password Label
         passwordLabel.setForeground(new Color(100, 67, 59));
         passwordLabel.setFont(ver1);
         passwordLabel.setBounds(20, 170, 300, 50);
-
-        registerLabel = new JLabel("Register a New Baker here!");
-        registerLabel.setForeground(new Color(100, 67, 59));
-        registerLabel.setFont(ver2);
-        registerLabel.setBounds(20, 330, 300, 50);
-
+        con.gridwidth = 1;
+        con.gridx = 0;
+        con.gridy = 2;
+        mainPanel.add(passwordLabel, con);
 
 
-        //Instantiation of Buttons
-        login = new JButton("Login");
+        passwordField = new JPasswordField(20);                            //Password Textfield
+        passwordField.setBounds(20, 210, 200, 30);
+        passwordField.setBackground(new Color(244, 235, 220));
+        con.gridx = 1;
+        con.gridy = 2;
+        mainPanel.add(passwordField, con);
+
+
+        login = new JButton("Login");                                      //Login Button
         login.setBounds(20, 260, 100, 50);
         login.setBackground(new Color(100,67, 59));
         login.setForeground(new Color(255, 255, 255));
         login.setSize(new Dimension(100, 35));
         login.setFont(ver1);
+        con.gridx = 0;
+        con.gridy = 3;
+        mainPanel.add(login, con);
+        
 
-        exit = new JButton("Exit");
-        exit.setBounds(170, 260, 100, 50);
+        exit = new JButton("Exit");                                         //Exit Button
+        exit.setBounds(170, 460, 100, 50);
         exit.setBackground(new Color(100,67, 59));
         exit.setForeground(new Color(255, 255, 255));
         exit.setSize(new Dimension(100, 35));
         exit.setFont(ver1);
-
-        register = new JButton("Register Baker");
-        register.setBounds(20, 370, 100, 50);
-        register.setBackground(new Color(100,67, 59));
-        register.setForeground(new Color(255, 255, 255));
-        register.setSize(new Dimension(100, 35));
-        register.setFont(ver1);
+        con.gridx = 1;
+        con.gridy = 3;
+        mainPanel.add(exit, con);
 
 
-        //Instantiation of TextField
-        usernameField = new JTextField(20);
-        usernameField.setBounds(20, 140, 200, 30);
-        usernameField.setBackground(new Color(244, 235, 220));
-
-        //Instantiation of PasswordField
-
-        pwordField = new JPasswordField(20);
-        pwordField.setBounds(20, 210, 200, 30);
-        pwordField.setBackground(new Color(244, 235, 220));
-        pwordField.setEchoChar('*');
-        
+        breakPanel = new JPanel();
+        breakPanel.setSize(200, 250);
+        breakPanel.setBackground(new Color(255, 255, 255, 180));
+        breakPanel.setBounds(20, 100, 300, 370);
+        breakPanel.setLayout(null);
+        con.gridx = 0;
+        con.gridy = 4;
+        con.ipady = 60;
+        mainPanel.add(breakPanel, con);
        
         
 
-
-        //Instantiation of Panels
-        mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(255,255, 255, 180));
-        mainPanel.setBounds(0, 0, 500, 60);
-        mainPanel.add(title);
-
-
-        optionPanel = new JPanel();
-        optionPanel.setSize(200, 250);
-        optionPanel.setBackground(new Color(255, 255, 255, 180));
-        optionPanel.setBounds(100, 85, 300, 370);
-        optionPanel.setLayout(null);
-
-        //Add to Option Panel
-        mainPanel.add(usernameLabel);
-        mainPanel.add(usernameField);
-        mainPanel.add(passwordLabel);
-        mainPanel.add(pwordField);
-        mainPanel.add(registerLabel);
-        mainPanel.add(login);
-        mainPanel.add(register);
-        mainPanel.add(exit);
-
-
         //Action Listeners 
         login.addActionListener(new ButtonListener());
-        
-       // Create Screen
-       mainPanel.add(optionPanel);
-       add(mainPanel);
-       pack();
-       setVisible(true);
-       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setSize(new Dimension(500, 500));
-
-
+        exit.addActionListener(new ButtonListener());
+            
+        //Create Screen
+        add(mainPanel);
+        pack();
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(new Dimension(500, 500));
     }
 
     private class ButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
+           
             if(e.getSource() == login){
                 //Get username and password
                 String username = usernameField.getText();
                 String password = new String(pwordField.getPassword());
 
                 if((username.equals("")) || (password.equals(""))){
-                    /// Error message
+                    //Error message
                     JOptionPane.showMessageDialog(LoginUI.this, "Empty field detected. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
                 else{
 
                     LoginController conn = new LoginController();
-                    if(conn.login(username, password) == true){
+                    Object [] array = conn.login(username, password);
+                    if(array[0].equals(true)){
+                        currentUser = (Baker)array[1];
+                        System.out.println(currentUser);
                         HomeUI home = new HomeUI(LoginUI.this);
                         setVisible(false);
                     }
@@ -153,19 +166,22 @@ public class LoginUI extends JFrame {
                         JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                }
-
-                
+                }     
 
             }
             
-            else if(e.getSource() == register){
-                new RegisterUI(LoginUI.this);
+        
+            else if (e.getSource() == exit){
+                System.exit(0);
                 
             }
 
-                    }
+        }
+
     }
 
+    public Baker getCurrentUser(){
+        return currentUser;
+    }
 
 }

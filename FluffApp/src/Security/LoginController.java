@@ -1,13 +1,15 @@
-//Last Modified: March 6, 2025
+//Last Modified: March 11th, 2025
 
 package Security;
 import java.util.ArrayList;
-import database.UserTableController;
+
+import Database.UserTableController;
 
 public class LoginController {
     
     //Verifies and validates a Baker's login credentials
-    public Boolean login(String userName, String password){
+    public Object[] login(String userName, String password){
+        Object [] ob = new Object[2];
         Boolean verified = false;
         String query = "SELECT * FROM Users";
         UserTableController conn = new UserTableController();
@@ -17,11 +19,14 @@ public class LoginController {
         for(Baker b: bakers){
             if ((b.getUserName().equals(userName)) && (b.getPassword().equals(password))){
                 verified = true;
+                ob[0] = verified;
+                ob[1] = b;
+
             }
 
         }
 
-        return verified;
+        return ob;
     //Gets saved registration information from database and checks for a match
 
 

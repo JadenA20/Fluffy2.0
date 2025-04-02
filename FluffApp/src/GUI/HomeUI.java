@@ -165,6 +165,11 @@ public class HomeUI extends JFrame {
                 
             }
 
+            if(e.getSource() == inventory){
+                ViewInventoryUI inventoryUI = new ViewInventoryUI(HomeUI);
+                HomeUI.setVisible(false);
+            }
+
             if(e.getSource() == exit){
                 System.exit(0);
             }

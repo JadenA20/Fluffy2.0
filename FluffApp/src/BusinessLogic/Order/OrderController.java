@@ -88,10 +88,34 @@ public class OrderController{
 
     public ArrayList<Order> viewCurrentOrders(){
         orders = new OrderTableController().getOrders("Select * From Orders Where Status = 0");
-        System.out.println(orders);
+        //System.out.println(orders);
 
         return orders;
     }
 
-   
+
+    public Boolean editOrder(String desc, String note, String paystat, float price, String deadline, int id){
+        String query = String.format("UPDATE orders SET Description = '%s', Note = '%s', Price = %f, PayStatus = '%s', Deadline = '%s' WHERE order_ID = %d", desc, note, price, paystat, deadline, id);
+
+
+        return new OrderTableController().editOrder(query);
+    }
+
+    public Boolean completeOrder(int iD){
+        Boolean success = false;
+        String query = String.format("UPDATE orders SET PayStatus = 'Completed', Date_Completed = CURRENT_DATE(), Status = 1 WHERE order_ID = %d", iD);
+        success = new OrderTableController().editOrder(query);
+
+        return success;
+    }
+
+
+    public Boolean cancelOrder(int iD){
+        Boolean success = false;
+        String query = String.format("DELETE FROM orders WHERE order_ID = %d", iD);
+        success = new OrderTableController().deleteOrder(query);
+
+        return success;
+    }
+
 }

@@ -17,12 +17,12 @@ public class HomeUI extends JFrame {
     private JButton register, orders, inventory, exit;
     private JPanel mainPanel, displayPanel;
     private HomeUI HomeUI;
-    private LoginUI login;
+    private LoginUI LoginUI;
 
     public HomeUI(LoginUI LoginUI){
 
         this.HomeUI = this;
-        login = LoginUI;
+        LoginUI = LoginUI;
        
        //Set Panel Title
        
@@ -45,7 +45,7 @@ public class HomeUI extends JFrame {
         displayPanel.setLayout(new FlowLayout());
         
 
-        title = new JLabel("Welcome " + login.getCurrentUser().getFName() + "!!!");                               
+        title = new JLabel("Welcome " + LoginUI.getCurrentUser().getFName() + "!!!");                               
         title.setForeground(new Color(100, 67, 59));
         title.setFont(ver3);
         title.setBounds(30, 50, 300, 50);
@@ -123,13 +123,13 @@ public class HomeUI extends JFrame {
             
 
                 setVisible(false);
-                RegisterUI registerUI = new RegisterUI(HomeUI.this, login);
+                RegisterUI registerUI = new RegisterUI(HomeUI.this, LoginUI);
     
             }
 
             if(e.getSource() == orders){
                 setVisible(false);
-                ViewOrdersUI view = new ViewOrdersUI(HomeUI.this, login);
+                ViewOrdersUI view = new ViewOrdersUI(HomeUI.this, LoginUI);
                 view.setVisible(true);
             }
 

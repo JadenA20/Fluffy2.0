@@ -151,20 +151,31 @@ public class LoginUI extends JFrame {
                 }
 
                 else{
-
                     LoginController conn = new LoginController();
                     Object [] array = conn.login(username, password);
-                    if(array[0].equals(true)){
-                        currentUser = (Baker)array[1];
-                        System.out.println(currentUser);
-                        HomeUI home = new HomeUI(LoginUI.this);
-                        setVisible(false);
+
+                    if(array[1] == null){
+                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+
                     }
 
                     else{
-                        
-                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        if(array[0].equals(true)){
+                            currentUser = (Baker)array[1];
+                            System.out.println(currentUser);
+                            HomeUI home = new HomeUI(LoginUI.this);
+                            setVisible(false);
+                        }
+    
+                        else{
+                            
+                            JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
+
+                    
+                    
 
                 }     
 

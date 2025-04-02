@@ -33,6 +33,10 @@ public class Order {
         
     }
 
+    public Order(){
+        
+    }
+
     public void setStatus(){
         this.status = false;
         this.date_cmp = getCurrentDate();

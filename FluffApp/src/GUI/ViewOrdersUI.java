@@ -9,6 +9,7 @@ import BusinessLogic.Order.OrderController;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class ViewOrdersUI extends JFrame{
 
@@ -22,9 +23,12 @@ public class ViewOrdersUI extends JFrame{
     private JPanel panel;
     private HomeUI home;
     private LoginUI login;
+    private ArrayList<Order> currentOrders;
 
     public ViewOrdersUI(HomeUI Home, LoginUI Login)
     {
+
+        currentOrders = new OrderController().viewCurrentOrders();
 
         this.home = Home;
         this.login = Login;
@@ -120,12 +124,14 @@ public class ViewOrdersUI extends JFrame{
         editOrder.setBackground(new Color(100, 67, 59));
         editOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
         editOrder.setForeground(new Color(255, 255, 255));
+        editOrder.addActionListener(new ButtonListener());
         
 
         deleteOrder = new JButton("Delete Order"); //3
         deleteOrder.setBackground(new Color(100, 67, 59));
         deleteOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
         deleteOrder.setForeground(new Color(255, 255, 255));
+        deleteOrder.addActionListener(new ButtonListener());
 
         sortByDeadline = new JButton("Sort-by-Deadline"); //4
         sortByDeadline.setBackground(new Color(100, 67, 59));
@@ -137,6 +143,7 @@ public class ViewOrdersUI extends JFrame{
         search.setBackground(new Color(100, 67, 59));
         search.setFont(new Font("Courier New", 1, 10)); // NOI18N
         search.setForeground(new Color(255, 255, 255));
+        search.addActionListener(new ButtonListener());
 
         sortByID = new JButton("Sort-by-ID"); //6
         sortByID.setBackground(new Color(100, 67, 59));
@@ -166,6 +173,8 @@ public class ViewOrdersUI extends JFrame{
         sumbit.setBackground(new Color(100, 67, 59));
         sumbit.setFont(new Font("Courier New", 1, 10)); // NOI18N
         sumbit.setForeground(new Color(255, 255, 255));
+        sumbit.addActionListener(new ButtonListener());;
+        
        
 
         //Instantiate table
@@ -391,14 +400,295 @@ public class ViewOrdersUI extends JFrame{
 
             }
 
-            if(e.getSource() == exit){
-                ViewOrdersUI.this.setVisible(false);
-                home.setVisible(true);
+            if(e.getSource() == search){
+                Boolean exists = false;
+                if(!(iDfield.getText().isEmpty())){
+                    Order order = new Order();
+                    int iD = Integer.parseInt(iDfield.getText());
+
+                    for(Order o: currentOrders){
+                        if (o.getID() == iD){
+                            order = o;
+                            exists = true;
+                        }
+                        
+                    }
+
+                    if (exists == false){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+
+                    }
+
+                    // Add code to check if order exists
+
+                    iDfield.setText(String.valueOf(iD));
+                    priceField.setText(String.valueOf(order.getPrice()));
+                    deadlineField.setText(order.getDeadline());
+                    descArea.setText(order.getDescription());
+                    noteArea.setText(order.getNotes());
+                    
+                    if(order.getPayStat().equals("Pending")){
+                        payBox.setSelectedItem("Pending");
+                    }
+
+                    if(order.getPayStat().equals("Deposited")){
+                        payBox.setSelectedItem("Deposit");
+                    }
+
+                    if(order.getPayStat().equals("Completed")){
+                        payBox.setSelectedItem("Complete");
+                    }
+
+                    statusBox.setSelectedItem("Open");
+
+
+
+                }
+
+                else{
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please enter an ID", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
+
+            if(e.getSource() == editOrder){
+
+                Boolean exists = false;
+
+                if(iDfield.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDfield.getText());
+                    for(Order o: currentOrders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+
+                    }
+
+                    if(exists == true){
+
+                        String reg = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
+
+                        String description = descArea.getText();
+                        String notes = noteArea.getText();
+                        String payStatus = String.valueOf(payBox.getSelectedItem());
+                        String deadline = deadlineField.getText();
+                        float price = Float.parseFloat(priceField.getText());
+
+                        if(!(Pattern.matches(reg, deadline))){
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Not a valid date", "Error", JOptionPane.ERROR_MESSAGE);
+
+                        }
+
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Save new details?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            OrderController conn = new OrderController();
+                            Boolean success = conn.editOrder(description, notes, payStatus,price, deadline, iD);
+
+                            if(success == true){
+                                addToTable();
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Successful");
+                                iDfield.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                            }
+
+                            else{
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update failed");
+                                iDfield.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                            }
+                         }
+
+                        else{
+                    
+                            iDfield.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                        }
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
+
+
+                }
+
+
+                
+                
+
+
+            }
+
+            if(e.getSource() == sumbit){
+
+                Boolean exists = false;
+                Boolean success = false;
+
+                if(iDfield.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDfield.getText());
+                    for(Order o: currentOrders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+                    }
+
+                    if((exists == true) && (String.valueOf(statusBox.getSelectedItem()).equals("Complete"))){
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Complete Order?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            OrderController conn = new OrderController();
+                            success = conn.completeOrder(iD);
+
+                            if(success == true){
+                                addToTable();                                
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Completed");
+                                iDfield.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                            }
+
+                            else{
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: Order not Completed");
+                            }
+
+                        }
+
+                        else
+                        {
+                            iDfield.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                        }
+
+
+                    }
+
+                    else if(String.valueOf(statusBox.getSelectedItem()).equals("Open")){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "To complete this order, please select the correct status option.");
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist");
+                        System.out.println(String.valueOf(statusBox.getSelectedItem()));
+
+                    }
+
+
+
+
+            }
+
+            
            
         }
 
+        if(e.getSource() == deleteOrder){
+            Boolean exists = false;
+            Boolean success = false;
+
+                if(iDfield.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, No Order Selected.");
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDfield.getText());
+                    for(Order o: currentOrders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+                    }
+
+                    if(exists == true){
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            success = new OrderController().cancelOrder(iD);
+                            if(success == true){
+                                addToTable();
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.");
+                                iDfield.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+
+                            }
+                        }
+
+                        else{
+                            iDfield.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                        }
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, Order Does Not Exist.");
+                        iDfield.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        
+
+                    }
+
+                }
+
+
+                
+
+        }
+
+        if(e.getSource() == viewCompleted){
+
+        }
+
+        if(e.getSource() == exit){
+            ViewOrdersUI.this.setVisible(false);
+            home.setVisible(true);
+
+        }
+
     }
+
+
+
+}
 
 }

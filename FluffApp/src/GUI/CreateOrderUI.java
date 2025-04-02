@@ -211,16 +211,32 @@ public class CreateOrderUI extends JFrame{
                     String payStatus = (String) paystat.getSelectedItem();
                     String deadline = dueDate.getText();
 
-                    OrderController Controls = new OrderController();
-                    Boolean success = Controls.createOrder(firstName, lastName, teleNum, flav, eventType, deadline, priceAmt, description, add_notes, method, destination, payStatus);
+                    if((firstName.equals("")) || (lastName.isEmpty()) || (teleNum.isEmpty()) || (flav.isEmpty()) || (eventType.isEmpty()) || (method.isEmpty()) || (description.isEmpty()) ){
+                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Empty Fields Detected: Please Enter Order Information.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
 
-                    if(success == true){
-                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        CreateOrderUI.this.setVisible(false);
-                        view.addToTable();
-                        view.setVisible(true);
                     }
 
+                    else{
+                        OrderController Controls = new OrderController();
+                        Boolean success = Controls.createOrder(firstName, lastName, teleNum, flav, eventType, deadline, priceAmt, description, add_notes, method, destination, payStatus);
+
+                        if(success == true){
+                            JOptionPane.showMessageDialog(CreateOrderUI.this, "Order Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            CreateOrderUI.this.setVisible(false);
+                            view.addToTable();
+                            view.setVisible(true);
+                        }
+
+                        else{
+                            JOptionPane.showMessageDialog(CreateOrderUI.this, "Error: Order not created", "Error", JOptionPane.ERROR_MESSAGE);
+
+                        }
+
+
+                    }
+
+                    
                     //Controls.entryValidity();
                 }
                 catch(NumberFormatException nfe){

@@ -13,11 +13,12 @@ import javax.swing.*;
 
 public class HomeUI extends JFrame {
 
-    private JLabel title, registerLabel;
+    private JLabel title;
     private JButton register, orders, inventory, exit, customers;
-    private JPanel mainPanel, displayPanel;
+    private JPanel jPanel;
     private HomeUI HomeUI;
     private LoginUI LoginUI;
+
 
     public HomeUI(LoginUI LoginUI){
 
@@ -29,98 +30,114 @@ public class HomeUI extends JFrame {
        setTitle("Home Screen");
         
        //Set Fonts
-       Font ver1 = new Font("Courier New", Font.BOLD, 30);
+       Font ver1 = new Font("Courier New", Font.BOLD, 14);
+       Font ver2 = new Font("Courier New", Font.BOLD, 34);
        Font ver3 = new Font("Bradley Hand ITC", Font.BOLD, 30);
 
-        //Creation of Panels
-        mainPanel = new JPanel();
-        mainPanel.setBackground(new Color(255,255, 255, 180));
-        mainPanel.setBounds(0, 0, 600, 100);
-        mainPanel.setLayout(new BoxLayout(mainPanel, 1));
-
-
-        displayPanel = new JPanel();
-        displayPanel.setBackground(new Color(255,255, 255, 180));
-        //displayPanel.setBounds(0, 0, 600, 100);
-        displayPanel.setLayout(new FlowLayout());
         
 
-        title = new JLabel("Welcome " + LoginUI.getCurrentUser().getFName() + "!!!");                               
+        title = new JLabel("Welcome " + LoginUI.getCurrentUser().getFName());                               
         title.setForeground(new Color(100, 67, 59));
-        title.setFont(ver3);
-        title.setBounds(30, 50, 300, 50);
-        mainPanel.add(title);
-       
-
-        //Registration Label and Button
-        /*registerLabel = new JLabel("Register a New Baker here!");
-        registerLabel.setForeground(new Color(100, 67, 59));
-        registerLabel.setFont(ver1);
-        registerLabel.setBounds(20, 330, 300, 50);
-        displayPanel.add(registerLabel);*/
+        title.setFont(ver2);
 
 
         register = new JButton("Register Baker");
-        //register.setBounds(20, 370, 100, 50);
         register.setBackground(new Color(100,67, 59));
         register.setForeground(new Color(255, 255, 255));
-        register.setSize(new Dimension(50, 10));
         register.setFont(ver1);
-        displayPanel.add(register);
+        register.addActionListener(new ButtonListener());
+        
+        
 
         orders = new JButton("Orders");
-        //orders.setBounds(20, 370, 100, 50);
         orders.setBackground(new Color(100,67, 59));
         orders.setForeground(new Color(255, 255, 255));
-        orders.setSize(new Dimension(50, 10));
         orders.setFont(ver1);
+        orders.setPreferredSize(new Dimension(106, 23));
         orders.addActionListener(new ButtonListener());
-        displayPanel.add(orders);
-
+    
         customers = new JButton("Customers");
-        //orders.setBounds(20, 370, 100, 50);
         customers.setBackground(new Color(100,67, 59));
         customers.setForeground(new Color(255, 255, 255));
-        customers.setSize(new Dimension(50, 10));
         customers.setFont(ver1);
         customers.addActionListener(new ButtonListener());
-        displayPanel.add(customers);
 
         inventory = new JButton("Inventory");
-        //inventory.setBounds(20, 370, 100, 50);
         inventory.setBackground(new Color(100,67, 59));
         inventory.setForeground(new Color(255, 255, 255));
-        inventory.setSize(new Dimension(50, 10));
-        inventory.setFont(ver1);
+        inventory.setFont(new Font("Courier New", Font.BOLD, 10));
         inventory.addActionListener(new ButtonListener());
-        displayPanel.add(inventory);
-
+    
         exit = new JButton("Exit");
-        //exit.setBounds(20, 370, 100, 50);
+    
         exit.setBackground(new Color(100,67, 59));
         exit.setForeground(new Color(255, 255, 255));
-        exit.setSize(new Dimension(50, 10));
         exit.setFont(ver1);
         exit.addActionListener(new ButtonListener());
-        displayPanel.add(exit);
+
+        jPanel = new JPanel();
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel);
+        jPanel.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(register, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(orders, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(customers)
+                .addGap(33, 33, 33)
+                .addComponent(inventory, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(exit, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(title, GroupLayout.PREFERRED_SIZE, 388, GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(title)
+                .addGap(186, 186, 186)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(register, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(orders, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customers, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inventory, GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
 
 
        
-       
-        add(mainPanel);
-        mainPanel.add(displayPanel);
+        
         pack();
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); /// CHANGE THIS 
-        setSize(new Dimension(600, 400));
-
-        register.addActionListener(new ButtonListener());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(500, 500));        
         
     }
 
-    //public static void main(String[] args) {
-       // HomeUI home = new HomeUI();
-    //}
 
     private class ButtonListener implements ActionListener{
 

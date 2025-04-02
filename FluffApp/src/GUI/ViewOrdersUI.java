@@ -161,6 +161,7 @@ public class ViewOrdersUI extends JFrame{
         viewCompleted.setBackground(new Color(100, 67, 59));
         viewCompleted.setFont(new Font("Courier New", 1, 14)); // NOI18N
         viewCompleted.setForeground(new Color(255, 255, 255));
+        viewCompleted.addActionListener(new ButtonListener());
         
 
         exit = new JButton("Exit"); //9
@@ -676,6 +677,9 @@ public class ViewOrdersUI extends JFrame{
         }
 
         if(e.getSource() == viewCompleted){
+            setVisible(false);
+            ViewCompleteOrdersUI viewComp = new ViewCompleteOrdersUI(ViewOrdersUI.this);
+
 
         }
 

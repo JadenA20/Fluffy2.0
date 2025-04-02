@@ -93,6 +93,11 @@ public class OrderController{
         return orders;
     }
 
+    public ArrayList<Order> viewCompletedOrders(){
+        orders = new OrderTableController().getOrders("Select * From Orders Where Status = 1");
+        return orders;
+    }
+
 
     public Boolean editOrder(String desc, String note, String paystat, float price, String deadline, int id){
         String query = String.format("UPDATE orders SET Description = '%s', Note = '%s', Price = %f, PayStatus = '%s', Deadline = '%s' WHERE order_ID = %d", desc, note, price, paystat, deadline, id);

@@ -119,13 +119,7 @@ public class Order {
     }
 
     public String getDateCompleted(){
-        if(isOpen() == false){
-            return this.date_cmp;
-        }
-
-        else{
-            return "Order not completed";
-        }
+        return this.date_cmp;
        
     }
 

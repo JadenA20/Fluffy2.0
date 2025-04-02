@@ -3,18 +3,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
+import BusinessLogic.Comparator.DateCompletedSort;
+import BusinessLogic.Comparator.OrderIDSort;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
 
 public class ViewCompleteOrdersUI extends JFrame{
     private JLabel title;
     private JTable table;
-    private JButton sortByID, sortByDeadline, exit;
+    private JButton sortByID, sortByDateCompleted, exit;
     private JScrollPane scrollPane;
     private ViewOrdersUI ViewOrdersUI;
 
@@ -27,11 +30,11 @@ public class ViewCompleteOrdersUI extends JFrame{
         title.setForeground(new Color(100, 67, 59));
 
         // Instantiate Buttons
-        sortByDeadline = new JButton("Sort-By-Deadline");
-        sortByDeadline.setBackground(new Color(100, 67, 59));
-        sortByDeadline.setFont(new Font("Courier New", 1, 14)); 
-        sortByDeadline.setForeground(new Color(255, 255, 255));
-        sortByDeadline.addActionListener(new ButtonListener());
+        sortByDateCompleted = new JButton("Sort-By-Deadline");
+        sortByDateCompleted.setBackground(new Color(100, 67, 59));
+        sortByDateCompleted.setFont(new Font("Courier New", 1, 14)); 
+        sortByDateCompleted.setForeground(new Color(255, 255, 255));
+        sortByDateCompleted.addActionListener(new ButtonListener());
 
         sortByID = new JButton("Sort-By-ID");
         sortByID.setBackground(new Color(100, 67, 59));
@@ -54,25 +57,25 @@ public class ViewCompleteOrdersUI extends JFrame{
         table.setForeground(new Color(100, 67, 59));
         table.setModel(new DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
             },
             new String [] {
-                "ID", "Customer", "Event", "Flavour", "Description", "Price", "DateCreated", "DateCompleted"
+                "ID", "Customer", "Event", "Flavour", "Description", "Address", "Price", "DateCreated", "DateCompleted"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class,  java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -100,7 +103,7 @@ public class ViewCompleteOrdersUI extends JFrame{
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(68, 68, 68)
-                .addComponent(sortByDeadline)
+                .addComponent(sortByDateCompleted)
                 .addGap(176, 176, 176)
                 .addComponent(sortByID, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 205, Short.MAX_VALUE)
@@ -120,7 +123,7 @@ public class ViewCompleteOrdersUI extends JFrame{
                 .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(sortByDeadline, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sortByDateCompleted, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
                     .addComponent(sortByID, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
                     .addComponent(exit, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
@@ -148,9 +151,29 @@ public class ViewCompleteOrdersUI extends JFrame{
             rowData[2] = o.getEvent();
             rowData[3] = o.getFlavour();
             rowData[4] = o.getDescription();
-            rowData[5] = o.getPrice();
-            rowData[6] = o.getDateCreated();
-            rowData[7] = o.getDateCompleted();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getPrice();
+            rowData[7] = o.getDateCreated();
+            rowData[8] = o.getDateCompleted();
+            model.addRow(rowData);
+        }
+
+    }
+
+    public void addToTable(ArrayList<Order> sortedOrders){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        Object rowData[] = new Object[10];
+        for(Order o: sortedOrders){
+            rowData[0] = o.getID();
+            rowData[1] = o.getCustomer().getName();
+            rowData[2] = o.getEvent();
+            rowData[3] = o.getFlavour();
+            rowData[4] = o.getDescription();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getPrice();
+            rowData[7] = o.getDateCreated();
+            rowData[8] = o.getDateCompleted();
             model.addRow(rowData);
         }
 
@@ -158,11 +181,19 @@ public class ViewCompleteOrdersUI extends JFrame{
 
     private class ButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == sortByDeadline){
+            if(e.getSource() == sortByDateCompleted){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCompletedOrders();
+                Collections.sort(orders, new DateCompletedSort());
+                addToTable(orders);
 
             }
 
             if(e.getSource() == sortByID){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCompletedOrders();
+                Collections.sort(orders, new OrderIDSort());
+                addToTable(orders);
 
             }
 

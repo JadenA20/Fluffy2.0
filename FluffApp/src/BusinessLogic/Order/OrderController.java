@@ -123,4 +123,10 @@ public class OrderController{
         return success;
     }
 
+    public ArrayList<Customer> viewCustomers(){
+        ArrayList<Customer> cust = new ArrayList<Customer>();
+        cust =  new CustomerTableController().getCustomers("select * from customers");
+        return cust;
+    }
+
 }

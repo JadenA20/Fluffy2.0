@@ -3,12 +3,18 @@ package GUI;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import BusinessLogic.Comparator.DeadlineSort;
+import BusinessLogic.Comparator.OrderIDSort;
+import BusinessLogic.Comparator.StatusSort;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 public class ViewOrdersUI extends JFrame{
@@ -137,6 +143,7 @@ public class ViewOrdersUI extends JFrame{
         sortByDeadline.setBackground(new Color(100, 67, 59));
         sortByDeadline.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByDeadline.setForeground(new Color(255, 255, 255));
+        sortByDeadline.addActionListener(new SortListener());
        
 
         search = new JButton("Search"); //5
@@ -149,12 +156,14 @@ public class ViewOrdersUI extends JFrame{
         sortByID.setBackground(new Color(100, 67, 59));
         sortByID.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByID.setForeground(new Color(255, 255, 255));
+        sortByID.addActionListener(new SortListener());
        
 
         sortByStatus = new JButton("Sort-by-Status"); //7
         sortByStatus.setBackground(new Color(100, 67, 59));
         sortByStatus.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByStatus.setForeground(new Color(255, 255, 255));
+        sortByStatus.addActionListener(new SortListener());
 
 
         viewCompleted = new JButton("View Completed"); //8
@@ -188,14 +197,14 @@ public class ViewOrdersUI extends JFrame{
             new Object [][] {
           },
             new String [] {
-                "ID", "Customer", "Event", "Flavour", "Description", "Notes", "Price", "PayStat", "Deadline"
+                "ID", "Customer", "Event", "Flavour", "Description", "Address", "Notes", "Price", "PayStat", "Deadline"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -376,17 +385,38 @@ public class ViewOrdersUI extends JFrame{
         model.setRowCount(0);
         ArrayList<Order> orders = new ArrayList<Order>();
         orders = new OrderController().viewCurrentOrders();
-        Object rowData[] = new Object[9];
+        Object rowData[] = new Object[10];
         for(Order o: orders){
             rowData[0] = o.getID();
             rowData[1] = o.getCustomer().getName();
             rowData[2] = o.getEvent();
             rowData[3] = o.getFlavour();
             rowData[4] = o.getDescription();
-            rowData[5] = o.getNotes();
-            rowData[6] = o.getPrice();
-            rowData[7] = o.getPayStat();
-            rowData[8] = o.getDeadline();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getNotes();
+            rowData[7] = o.getPrice();
+            rowData[8] = o.getPayStat();
+            rowData[9] = o.getDeadline();
+            model.addRow(rowData);
+        }
+
+    }
+
+    public void addToTable(ArrayList<Order> sortedOrders){
+        DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
+        model.setRowCount(0);
+        Object rowData[] = new Object[10];
+        for(Order o: sortedOrders){
+            rowData[0] = o.getID();
+            rowData[1] = o.getCustomer().getName();
+            rowData[2] = o.getEvent();
+            rowData[3] = o.getFlavour();
+            rowData[4] = o.getDescription();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getNotes();
+            rowData[7] = o.getPrice();
+            rowData[8] = o.getPayStat();
+            rowData[9] = o.getDeadline();
             model.addRow(rowData);
         }
 
@@ -692,7 +722,37 @@ public class ViewOrdersUI extends JFrame{
     }
 
 
+    
 
+}
+
+private class SortListener implements ActionListener{
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == sortByDeadline){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new DeadlineSort());
+            addToTable(orders);
+
+
+        }
+
+        if(e.getSource() == sortByID){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new OrderIDSort());
+            addToTable(orders);
+
+        }
+
+        if(e.getSource() == sortByStatus){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new StatusSort());
+            addToTable(orders);
+
+        }
+    }
 }
 
 }

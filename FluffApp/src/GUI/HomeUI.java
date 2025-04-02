@@ -14,7 +14,7 @@ import javax.swing.*;
 public class HomeUI extends JFrame {
 
     private JLabel title, registerLabel;
-    private JButton register, orders, inventory, exit;
+    private JButton register, orders, inventory, exit, customers;
     private JPanel mainPanel, displayPanel;
     private HomeUI HomeUI;
     private LoginUI LoginUI;
@@ -77,6 +77,15 @@ public class HomeUI extends JFrame {
         orders.addActionListener(new ButtonListener());
         displayPanel.add(orders);
 
+        customers = new JButton("Customers");
+        //orders.setBounds(20, 370, 100, 50);
+        customers.setBackground(new Color(100,67, 59));
+        customers.setForeground(new Color(255, 255, 255));
+        customers.setSize(new Dimension(50, 10));
+        customers.setFont(ver1);
+        customers.addActionListener(new ButtonListener());
+        displayPanel.add(customers);
+
         inventory = new JButton("Inventory");
         //inventory.setBounds(20, 370, 100, 50);
         inventory.setBackground(new Color(100,67, 59));
@@ -131,6 +140,12 @@ public class HomeUI extends JFrame {
                 setVisible(false);
                 ViewOrdersUI view = new ViewOrdersUI(HomeUI.this, LoginUI);
                 view.setVisible(true);
+            }
+
+            if(e.getSource() == customers){
+                setVisible(false);
+                ViewCustomersUI customersUI = new ViewCustomersUI(HomeUI);
+                
             }
 
             if(e.getSource() == exit){

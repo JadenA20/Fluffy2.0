@@ -114,6 +114,10 @@ public class Order {
         return this.price;
     }
 
+    public String getDeliveryAddress(){
+        return this.deliveryAddress;
+    }
+
     public String getDateCreated(){
         return this.date_cr;
     }

@@ -99,8 +99,8 @@ public class OrderController{
     }
 
 
-    public Boolean editOrder(String desc, String note, String paystat, float price, String deadline, int id){
-        String query = String.format("UPDATE orders SET Description = '%s', Note = '%s', Price = %f, PayStatus = '%s', Deadline = '%s' WHERE order_ID = %d", desc, note, price, paystat, deadline, id);
+    public Boolean editOrder(String desc, String note, String paystat, String address, float price, String deadline, int id){
+        String query = String.format("UPDATE orders SET Description = '%s', Note = '%s', Price = %f, PayStatus = '%s', Address = '%s', Deadline = '%s' WHERE order_ID = %d", desc, note, price, paystat,address, deadline, id);
 
 
         return new OrderTableController().editOrder(query);

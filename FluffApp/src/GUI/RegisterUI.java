@@ -153,6 +153,8 @@ public class RegisterUI extends JFrame{
         contentPanel.add(roleLabel, con);
 
         role = new JComboBox<>(roles);                                     //Role Dropdown
+        role.setForeground(new Color(100, 67, 59));
+        role.setFont(new Font("Courier New", 1, 14));
         role.setFont(ver1);
         role.setBounds(150,50,130,15);
         con.gridx = 1;

@@ -57,13 +57,6 @@ public class CreateOrderUI extends JFrame{
         lname.setForeground(bgColor);
         entryPanel.add(lname);
 
-        /*addrLabel = new JLabel("Address:");
-        addrLabel.setFont(ver3);
-        addrLabel.setForeground(bgColor);
-        entryPanel.add(addrLabel);
-        address = new JTextField(50);
-        entryPanel.add(address);*/
-
         phoneLabel = new JLabel("Telephone Number:");
         phoneLabel.setFont(ver3);
         phoneLabel.setForeground(bgColor);

@@ -43,4 +43,69 @@ public class InventoryTableController {
     }
 
 
+    public Boolean addItem(String query){
+        int rowsAffected = 0;
+
+        try{
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement stmt = connection.createStatement();
+            rowsAffected = stmt.executeUpdate(query);
+            stmt.close();
+            connection.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return rowsAffected > 0;
+        
+    }
+
+    public Boolean edit(String query){
+        int rowsUpdated = 0;
+
+        try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement stmt = connection.createStatement();
+            rowsUpdated = stmt.executeUpdate(query);
+
+            
+        } 
+        
+        catch (Exception e) {
+            System.out.println(e);
+            // TODO: handle exception
+        }
+
+        return rowsUpdated > 0;
+
+    }
+
+    public Boolean delete(String query){
+        int rowsUpdated = 0;
+
+        try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement stmt = connection.createStatement();
+            rowsUpdated = stmt.executeUpdate(query);
+
+            
+        } 
+        
+        catch (Exception e) {
+            System.out.println(e);
+            // TODO: handle exception
+        }
+
+        return rowsUpdated > 0;
+
+
+    }
+
+
+   
+
+
 }

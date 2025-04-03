@@ -436,6 +436,22 @@ public class ViewOrdersUI extends JFrame{
 
     }
 
+    public Boolean isInteger(String str){
+        if(str == null  || str.isEmpty()){
+            return false;
+        }
+
+        try {
+            Integer.parseInt(str);
+            return true;
+            
+        } catch (Exception e) {
+            return false;
+
+            // TODO: handle exception
+        }
+    }
+
     private class  ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -447,9 +463,24 @@ public class ViewOrdersUI extends JFrame{
 
             if(e.getSource() == search){
                 Boolean exists = false;
+
+               
+
                 if(!(iDField.getText().isEmpty())){
+                    String ID = iDField.getText().strip();
+
+                    if(!isInteger(ID)){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                        return;
+                    }
                     Order order = new Order();
-                    int iD = Integer.parseInt(iDField.getText());
+                    int iD = Integer.parseInt(iDField.getText().strip());
 
                     for(Order o: currentOrders){
                         if (o.getID() == iD){
@@ -481,6 +512,12 @@ public class ViewOrdersUI extends JFrame{
 
                 else{
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please enter an ID", "Error", JOptionPane.ERROR_MESSAGE);
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
                 }
 
             }
@@ -491,10 +528,29 @@ public class ViewOrdersUI extends JFrame{
 
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                     iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
                 }
 
                 else{
-                    int iD = Integer.parseInt(iDField.getText());
+                    int iD = Integer.parseInt(iDField.getText().strip());
                     for(Order o: currentOrders)
                     {
                         if(o.getID() == iD){
@@ -554,6 +610,7 @@ public class ViewOrdersUI extends JFrame{
                             deadlineField.setText(" ");
                             descArea.setText(" ");
                             noteArea.setText(" ");
+                            addressArea.setText(" ");
                         }
 
                     }
@@ -579,12 +636,33 @@ public class ViewOrdersUI extends JFrame{
                 Boolean exists = false;
                 Boolean success = false;
 
+               
+
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
                 }
 
                 else{
-                    int iD = Integer.parseInt(iDField.getText());
+                    int iD = Integer.parseInt(iDField.getText().strip());
                     for(Order o: currentOrders)
                     {
                         if(o.getID() == iD){
@@ -653,13 +731,33 @@ public class ViewOrdersUI extends JFrame{
         if(e.getSource() == deleteOrder){
             Boolean exists = false;
             Boolean success = false;
+            
 
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, No Order Selected.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
                 }
 
                 else{
-                    int iD = Integer.parseInt(iDField.getText());
+                    int iD = Integer.parseInt(iDField.getText().strip());
                     for(Order o: currentOrders)
                     {
                         if(o.getID() == iD){

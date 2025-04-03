@@ -2,12 +2,20 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import BusinessLogic.Comparator.InventoryIDSort;
+import BusinessLogic.Comparator.InventoryStatusSort;
+import BusinessLogic.Comparator.InventoryTypeSort;
+import BusinessLogic.Comparator.QuantitySort;
 import BusinessLogic.Inventory.*;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ViewInventoryUI extends JFrame {
     private JLabel title, iD, name, desc, type, priority, quantity;
@@ -60,44 +68,52 @@ public class ViewInventoryUI extends JFrame {
         search.setBackground(new java.awt.Color(100, 67, 59));
         search.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
         search.setForeground(new java.awt.Color(255, 255, 255));
+        search.addActionListener(new ButtonListener());
         
         create = new JButton("New Item");
         create.setBackground(new Color(100, 67, 59));
         create.setFont(new Font("Courier New", 1, 14)); // NOI18N
         create.setForeground(new Color(255, 255, 255));
+        create.addActionListener(new ButtonListener());
         
         edit = new JButton("Edit Item");
         edit.setBackground(new Color(100, 67, 59));
         edit.setFont(new Font("Courier New", 1, 14)); // NOI18N
         edit.setForeground(new Color(255, 255, 255));
+        edit.addActionListener(new ButtonListener());
        
         delete = new JButton("Delete Item");
         delete.setBackground(new Color(100, 67, 59));
         delete.setFont(new Font("Courier New", 1, 14)); // NOI18N
         delete.setForeground(new Color(255, 255, 255));
+        delete.addActionListener(new ButtonListener());
        
 
         sortByID = new JButton("Sort-By-ID");
         sortByID.setBackground(new Color(100, 67, 59));
         sortByID.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByID.setForeground(new Color(255, 255, 255));
+        sortByID.addActionListener(new SortListener());
 
 
         sortByPriority = new JButton("Sort-By-Priority");
         sortByPriority.setBackground(new Color(100, 67, 59));
         sortByPriority.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByPriority.setForeground(new Color(255, 255, 255));
+        sortByPriority.addActionListener(new SortListener());
         
 
         sortByStatus = new JButton("Sort-By-Status");
         sortByStatus.setBackground(new Color(100, 67, 59));
         sortByStatus.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByStatus.setForeground(new Color(255, 255, 255));
+        sortByStatus.addActionListener(new SortListener());
         
         sortByQuantity = new JButton("Sort-By-Quantity");
         sortByQuantity.setBackground(new Color(100, 67, 59));
         sortByQuantity.setFont(new Font("Courier New", 1, 14)); // NOI18N
         sortByQuantity.setForeground(new Color(255, 255, 255));
+        sortByQuantity.addActionListener(new SortListener());
        
         
 
@@ -105,6 +121,7 @@ public class ViewInventoryUI extends JFrame {
         exit.setBackground(new Color(100, 67, 59));
         exit.setFont(new Font("Courier New", 1, 14)); // NOI18N
         exit.setForeground(new Color(255, 255, 255));
+        exit.addActionListener(new ButtonListener());
        
 
        
@@ -338,7 +355,138 @@ public class ViewInventoryUI extends JFrame {
     }
 
     public void addToTable(ArrayList<Inventory> itemList){
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        Object rowData[] = new Object[10];
+        for(Inventory i: itemList){
+            rowData[0] = i.getID();
+            rowData[1] = i.getName();
+            rowData[2] = i.getDesc();
+            rowData[3] = i.getType();
+            rowData[4] = i.getStatus();
+            rowData[5] = i.getQuantity();
+            model.addRow(rowData);
+        }
         
+    }
+    
+    private class ButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e){
+            if(e.getSource() == create){
+                
+            }
+
+            if(e.getSource() == edit){
+                
+            }
+
+
+            if(e.getSource() == delete){
+                
+            }
+
+            if(e.getSource() == search){
+                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                itemList = new InventoryController().viewRecords();
+                Inventory i  = new Inventory();
+                Boolean exists = false;
+
+                if(idField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please enter an ID number" );
+
+                }
+
+                else{
+                    int iD = Integer.parseInt(idField.getText());
+                    for(Inventory inventory: itemList){
+                        if(inventory.getID() == iD){
+                            i = inventory;
+                            exists = true;
+                        }
+
+                    }
+
+                    if(exists){
+                        itemField.setText(i.getName());
+                        descField.setText(i.getDesc());
+                        quantityField.setText(String.valueOf(i.getQuantity()));
+                        typeBox.setSelectedItem(i.getType());
+                        statusBox.setSelectedItem(i.getStatus());
+
+
+
+                        
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Order Does Not Exist" );
+
+                    }
+                    
+
+                }
+
+                
+                
+    
+
+                
+            }
+
+            if(e.getSource() == exit){
+                setVisible(false);
+                homeUI.setVisible(true);
+                
+            }
+        }
+    
+        
+    }
+    
+    private class SortListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e) {
+            
+            if(e.getSource() == sortByID){
+                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                itemList = new InventoryController().viewRecords();
+                Collections.sort(itemList, new InventoryIDSort());
+                addToTable(itemList);
+
+            }
+
+            if(e.getSource() == sortByPriority){
+                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                itemList = new InventoryController().viewRecords();
+                Collections.sort(itemList, new InventoryTypeSort());
+                addToTable(itemList);
+
+
+            }
+
+            if(e.getSource() == sortByStatus){
+                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                itemList = new InventoryController().viewRecords();
+                Collections.sort(itemList, new InventoryStatusSort());
+                addToTable(itemList);
+
+
+
+            }
+
+            if(e.getSource() == sortByQuantity){
+                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                itemList = new InventoryController().viewRecords();
+                Collections.sort(itemList, new QuantitySort());
+                addToTable(itemList);
+
+
+
+            }
+        }
+
+       
     }
 
 

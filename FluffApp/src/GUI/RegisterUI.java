@@ -13,7 +13,8 @@ import javax.swing.*;
 public class RegisterUI extends JFrame{
     private JButton register, back;
     private JPanel breakPanel, contentPanel;
-    private JTextField fname, lname, username, password, confirm_pass;
+    private JTextField fname, lname, username;
+    private JPasswordField password, confirm_pass;
     private JLabel title, fnameLabel, lnameLabel, userLabel, passLabel, confirmLabel, roleLabel;
     private JComboBox<String> role;
     private String[] roles = {"Admin", "Normal"};
@@ -22,6 +23,7 @@ public class RegisterUI extends JFrame{
 
     public RegisterUI(HomeUI HomeUI, LoginUI LoginUI){
         this.HomeUI = HomeUI;
+        this.LoginUI = LoginUI;
 
         //Set Panel Title
         setTitle("Register Baker");
@@ -116,7 +118,7 @@ public class RegisterUI extends JFrame{
         contentPanel.add(passLabel, con);
 
 
-        password = new JTextField(20);                            //Password TextField
+        password = new JPasswordField(20);                            //Password TextField
         password.setForeground(new Color(100, 67, 59));
         password.setFont(ver1);
         password.setBounds(20, 170, 300, 50);
@@ -134,7 +136,7 @@ public class RegisterUI extends JFrame{
         contentPanel.add(confirmLabel, con);
 
 
-        confirm_pass = new JTextField(20);                         //Confirm Password TextField
+        confirm_pass = new JPasswordField(20);                         //Confirm Password TextField
         confirm_pass.setForeground(new Color(100, 67, 59));
         confirm_pass.setFont(ver1);
         confirm_pass.setBounds(20, 170, 300, 50);
@@ -151,6 +153,8 @@ public class RegisterUI extends JFrame{
         contentPanel.add(roleLabel, con);
 
         role = new JComboBox<>(roles);                                     //Role Dropdown
+        role.setForeground(new Color(100, 67, 59));
+        role.setFont(new Font("Courier New", 1, 14));
         role.setFont(ver1);
         role.setBounds(150,50,130,15);
         con.gridx = 1;
@@ -263,8 +267,9 @@ public class RegisterUI extends JFrame{
             }
 
             else if(e.getSource() == back){
-                HomeUI home = new HomeUI(LoginUI);
+                //HomeUI home = new HomeUI(LoginUI);
                 setVisible(false);
+                HomeUI.setVisible(true);
             }      
 
         }

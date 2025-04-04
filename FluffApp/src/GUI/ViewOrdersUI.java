@@ -1,24 +1,43 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import BusinessLogic.Comparator.DeadlineSort;
+import BusinessLogic.Comparator.OrderIDSort;
+import BusinessLogic.Comparator.StatusSort;
+import BusinessLogic.Order.Order;
+import BusinessLogic.Order.OrderController;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.regex.Pattern;
 
 public class ViewOrdersUI extends JFrame{
 
-    private JLabel title, notes, description, orderID, deadline, price, paymentStatus, status;
-    private JTextField iDfield,  deadlineField, priceField;
-    private JTextArea descArea, noteArea;
+    private JLabel title, notes, description, orderID, deadline, price, paymentStatus, status, address;
+    private JTextField iDField,  deadlineField, priceField;
+    private JTextArea descArea, noteArea, addressArea;
     private JComboBox payBox, statusBox;
-    private JScrollPane scrollPane1, scrollPane2, scrollPane3;
-    private JButton createOrder, editOrder, deleteOrder, sortByDeadline, search, sortByID, sortByStatus, viewCompleted, exit, sumbit;
+    private JScrollPane scrollPane1, scrollPane2, scrollPane3, scrollPane4;
+    private JButton createOrder, editOrder, deleteOrder, sortByDeadline, search, sortByID, sortByStatus, viewCompleted, exit, submit;
     private JTable ordersTable;
     private JPanel panel;
     private HomeUI home;
     private LoginUI login;
+    private ArrayList<Order> currentOrders;
 
     public ViewOrdersUI(HomeUI Home, LoginUI Login)
     {
+
+        currentOrders = new OrderController().viewCurrentOrders();
 
         this.home = Home;
         this.login = Login;
@@ -40,12 +59,17 @@ public class ViewOrdersUI extends JFrame{
     
 
         orderID = new JLabel("Order ID: "); //JLabel 4
-        orderID.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        orderID.setFont(new Font("Courier New", 1, 12)); // NOI18N
         orderID.setForeground(new Color(100, 67, 59));
         
         deadline = new JLabel("Deadline: "); //JLabel 5
         deadline.setFont(new Font("Courier New", 1, 14)); // NOI18N
         deadline.setForeground(new Color(100, 67, 59));
+
+        address = new JLabel("Address");
+        address.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        address.setForeground(new Color(100, 67, 59));
+
         
         price = new JLabel("Price: "); //JLabel 6
         price.setFont(new Font("Courier New", 1, 14)); // NOI18N
@@ -53,8 +77,10 @@ public class ViewOrdersUI extends JFrame{
     
 
         paymentStatus = new JLabel("Payment Status: "); //JLabel 7
-        paymentStatus.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        paymentStatus.setFont(new Font("Courier New", 1, 13)); // NOI18N
         paymentStatus.setForeground(new Color(100, 67, 59));
+        paymentStatus.setPreferredSize(new Dimension(200, 30)); // Adjust width as needed
+
     
 
         status = new JLabel("Status: "); //JLabel 8
@@ -63,7 +89,7 @@ public class ViewOrdersUI extends JFrame{
 
 
         //Instantiate textfeilds
-        iDfield = new JTextField(10); //1
+        iDField = new JTextField(10); //1
         deadlineField = new JTextField(10); //3
         priceField = new JTextField(10); //5
 
@@ -77,15 +103,24 @@ public class ViewOrdersUI extends JFrame{
         noteArea.setColumns(20);
         noteArea.setForeground(new Color(100, 67, 59));
         noteArea.setRows(5);
+
+        addressArea =  new JTextArea();
+        addressArea.setColumns(20);
+        addressArea.setForeground(new Color(100, 67, 59));
+        addressArea.setRows(5);
+
+
        
 
         //Instantiate ComboBox
         payBox = new JComboBox(); //1
         payBox.setForeground(new Color(100, 67, 59));
-        payBox.setModel(new DefaultComboBoxModel<>(new String[] { "Pending", "Deposit", "Complete"}));
+        payBox.setFont(new Font("Courier New", 1, 14));
+        payBox.setModel(new DefaultComboBoxModel<>(new String[] { "Pending", "Deposited", "Completed"}));
 
         statusBox = new JComboBox<>(); //3
         statusBox.setForeground(new Color(100, 67, 59));
+        statusBox.setFont(new Font("Courier New", 1, 14));
         statusBox.setModel(new DefaultComboBoxModel<>(new String[] { "Open", "Complete"}));
 
 
@@ -97,6 +132,9 @@ public class ViewOrdersUI extends JFrame{
         scrollPane2.setViewportView(noteArea);
 
         scrollPane3 = new JScrollPane(); //3
+
+        scrollPane4 = new JScrollPane();
+        scrollPane4.setViewportView(addressArea);
        
         //Instantiate buttons
         createOrder = new JButton("Create Order"); //1
@@ -110,40 +148,47 @@ public class ViewOrdersUI extends JFrame{
         editOrder.setBackground(new Color(100, 67, 59));
         editOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
         editOrder.setForeground(new Color(255, 255, 255));
+        editOrder.addActionListener(new ButtonListener());
         
 
-        deleteOrder = new JButton("Delete Order"); //3
+        deleteOrder = new JButton("Cancel Order"); //3
         deleteOrder.setBackground(new Color(100, 67, 59));
         deleteOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
         deleteOrder.setForeground(new Color(255, 255, 255));
+        deleteOrder.addActionListener(new ButtonListener());
 
         sortByDeadline = new JButton("Sort-by-Deadline"); //4
         sortByDeadline.setBackground(new Color(100, 67, 59));
-        sortByDeadline.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        sortByDeadline.setFont(new Font("Courier New", 1, 12)); // NOI18N
         sortByDeadline.setForeground(new Color(255, 255, 255));
+        sortByDeadline.addActionListener(new SortListener());
        
 
         search = new JButton("Search"); //5
         search.setBackground(new Color(100, 67, 59));
         search.setFont(new Font("Courier New", 1, 10)); // NOI18N
         search.setForeground(new Color(255, 255, 255));
+        search.addActionListener(new ButtonListener());
 
         sortByID = new JButton("Sort-by-ID"); //6
         sortByID.setBackground(new Color(100, 67, 59));
-        sortByID.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        sortByID.setFont(new Font("Courier New", 1, 12)); // NOI18N
         sortByID.setForeground(new Color(255, 255, 255));
+        sortByID.addActionListener(new SortListener());
        
 
         sortByStatus = new JButton("Sort-by-Status"); //7
         sortByStatus.setBackground(new Color(100, 67, 59));
-        sortByStatus.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        sortByStatus.setFont(new Font("Courier New", 1, 12)); // NOI18N
         sortByStatus.setForeground(new Color(255, 255, 255));
+        sortByStatus.addActionListener(new SortListener());
 
 
         viewCompleted = new JButton("View Completed"); //8
         viewCompleted.setBackground(new Color(100, 67, 59));
         viewCompleted.setFont(new Font("Courier New", 1, 14)); // NOI18N
         viewCompleted.setForeground(new Color(255, 255, 255));
+        viewCompleted.addActionListener(new ButtonListener());
         
 
         exit = new JButton("Exit"); //9
@@ -152,10 +197,12 @@ public class ViewOrdersUI extends JFrame{
         exit.setForeground(new Color(255, 255, 255));
         exit.addActionListener(new ButtonListener());
 
-        sumbit = new JButton("Submit"); //10
-        sumbit.setBackground(new Color(100, 67, 59));
-        sumbit.setFont(new Font("Courier New", 1, 10)); // NOI18N
-        sumbit.setForeground(new Color(255, 255, 255));
+        submit = new JButton("Submit"); //10
+        submit.setBackground(new Color(100, 67, 59));
+        submit.setFont(new Font("Courier New", 1, 10)); // NOI18N
+        submit.setForeground(new Color(255, 255, 255));
+        submit.addActionListener(new ButtonListener());;
+        
        
 
         //Instantiate table
@@ -166,23 +213,16 @@ public class ViewOrdersUI extends JFrame{
         ordersTable.setForeground(new Color(100, 67, 59));
         ordersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
+          },
             new String [] {
-                "ID", "Customer", "Event", "Flavour", "Description", "Notes", "Price", "PayStat", "Deadline"
+                "ID", "Customer", "Event", "Flavour", "Description", "Address", "Notes", "Price", "PayStat", "Deadline"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -220,141 +260,133 @@ public class ViewOrdersUI extends JFrame{
 
 
         // Set Layout
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        GroupLayout layout = new GroupLayout(getContentPane());
+                getContentPane().setLayout(layout);
+                layout.setHorizontalGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(description, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(notes, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(scrollPane3, GroupLayout.PREFERRED_SIZE, 791, GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(16, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(notes, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(description, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(price, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(priceField, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(deadline, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(address, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(scrollPane4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(title, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(deadlineField, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(orderID, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addComponent(createOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(iDField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(search, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(status, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(62, 62, 62)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(payBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(orderID, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addGap(5, 5, 5)
-                                                        .addComponent(iDfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(25, 25, 25))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(paymentStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(priceField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(deadline, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(130, 130, 130)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(statusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(sumbit, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(editOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                                        .addComponent(deleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(43, 43, 43)
-                                        .addComponent(viewCompleted, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(9, 9, 9)))))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(sortByDeadline)
-                        .addGap(58, 58, 58)
-                        .addComponent(sortByID, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
-                        .addComponent(sortByStatus)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(statusBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(submit, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(paymentStatus, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(payBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addGap(22, 22, 22))
+                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(createOrder, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(editOrder, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57)
+                                .addComponent(deleteOrder, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
+                                .addGap(46, 46, 46)
+                                .addComponent(viewCompleted, GroupLayout.PREFERRED_SIZE, 161, GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(sortByDeadline, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+                        .addGap(66, 66, 66)
+                        .addComponent(sortByID, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
+                        .addComponent(sortByStatus, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(exit)
-                        .addGap(65, 65, 65))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(title)
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(description)
-                    .addComponent(paymentStatus))
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55))
+                );
+                layout.setVerticalGroup(
+                    layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(27, 27, 27)
+                        .addComponent(title)
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(description)
+                            .addComponent(price)
+                            .addComponent(orderID))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addComponent(orderID)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(search)
-                                    .addComponent(iDfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(payBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(price)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(notes)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(status)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(statusBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sumbit))))))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deadline)
-                    .addComponent(notes))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deadlineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(createOrder)
-                    .addComponent(editOrder)
-                    .addComponent(deleteOrder)
-                    .addComponent(viewCompleted))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sortByDeadline)
-                    .addComponent(sortByID)
-                    .addComponent(sortByStatus)
-                    .addComponent(exit))
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(priceField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                            .addComponent(deadline)
+                                            .addComponent(status))
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                            .addComponent(deadlineField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(statusBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(submit)))
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(search)
+                                        .addComponent(iDField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                                .addGap(26, 26, 26)
+                                .addComponent(address)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                    .addComponent(scrollPane4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(paymentStatus)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(payBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(createOrder)
+                            .addComponent(editOrder)
+                            .addComponent(deleteOrder)
+                            .addComponent(viewCompleted))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(scrollPane3, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(sortByDeadline)
+                            .addComponent(sortByID)
+                            .addComponent(sortByStatus)
+                            .addComponent(exit))
+                        .addGap(73, 73, 73))
+                );
+        
+
+        addToTable();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setSize(new Dimension(550, 400));
+        //setSize(new Dimension(900, 900));
         pack();
         
 
@@ -363,6 +395,117 @@ public class ViewOrdersUI extends JFrame{
 
 
 
+    }
+
+    public void addToTable(){
+        DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
+        model.setRowCount(0);
+        ArrayList<Order> orders = new ArrayList<Order>();
+        orders = new OrderController().viewCurrentOrders();
+        Object rowData[] = new Object[10];
+        for(Order o: orders){
+            rowData[0] = o.getID();
+            rowData[1] = o.getCustomer().getName();
+            rowData[2] = o.getEvent();
+            rowData[3] = o.getFlavour();
+            rowData[4] = o.getDescription();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getNotes();
+            rowData[7] = o.getPrice();
+            rowData[8] = o.getPayStat();
+            rowData[9] = o.getDeadline();
+            model.addRow(rowData);
+        }
+
+    }
+
+    public void addToTable(ArrayList<Order> sortedOrders){
+        DefaultTableModel model = (DefaultTableModel) ordersTable.getModel();
+        model.setRowCount(0);
+        Object rowData[] = new Object[10];
+        for(Order o: sortedOrders){
+            rowData[0] = o.getID();
+            rowData[1] = o.getCustomer().getName();
+            rowData[2] = o.getEvent();
+            rowData[3] = o.getFlavour();
+            rowData[4] = o.getDescription();
+            rowData[5] = o.getDeliveryAddress();
+            rowData[6] = o.getNotes();
+            rowData[7] = o.getPrice();
+            rowData[8] = o.getPayStat();
+            rowData[9] = o.getDeadline();
+            model.addRow(rowData);
+        }
+
+    }
+
+    public Boolean isInteger(String str){
+        if(str == null  || str.isEmpty()){
+            return false;
+        }
+
+        try {
+            Integer.parseInt(str);
+            return true;
+            
+        } catch (Exception e) {
+            return false;
+
+            // TODO: handle exception
+        }
+    }
+
+    public Boolean isFloat(String str){
+        if(str == null  || str.isEmpty()){
+            return false;
+        }
+
+        try {
+            Float.parseFloat(str);
+            return true;
+            
+        } catch (Exception e) {
+            return false;
+
+            // TODO: handle exception
+        }
+    }
+
+    public Boolean validDateFormat(String date){
+        try{
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate.parse(date, format);
+            return true;
+        }
+
+        catch(DateTimeParseException e){
+            System.out.println(e);
+            return false;
+            
+        }
+
+
+
+    }
+
+    public Boolean isValidDate(String date){
+        if(validDateFormat(date)){
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateEntered = LocalDate.parse(date, format);
+            LocalDate currnDate = LocalDate.now();
+
+            if(dateEntered.isAfter(currnDate) || dateEntered.isEqual(currnDate)){
+                return true;
+            }
+
+            else{
+                return false;
+            }
+        }
+
+        else{
+            return false;
+        }
     }
 
     private class  ButtonListener implements ActionListener{
@@ -374,14 +517,419 @@ public class ViewOrdersUI extends JFrame{
 
             }
 
-            if(e.getSource() == exit){
-                ViewOrdersUI.this.setVisible(false);
-                home.setVisible(true);
+            if(e.getSource() == search){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
+                Boolean exists = false;
+
+               
+
+                if(!(iDField.getText().isEmpty())){
+                    String ID = iDField.getText().strip();
+
+                    if(!isInteger(ID)){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                        return;
+                    }
+                    Order order = new Order();
+                    int iD = Integer.parseInt(iDField.getText().strip());
+
+                    for(Order o: orders){
+                        if (o.getID() == iD){
+                            order = o;
+                            exists = true;
+                        }
+                        
+                    }
+
+                    if (exists == false){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+
+                    }
+
+                    // Add code to check if order exists
+
+                    iDField.setText(String.valueOf(iD));
+                    priceField.setText(String.valueOf(order.getPrice()));
+                    deadlineField.setText(order.getDeadline());
+                    descArea.setText(order.getDescription());
+                    noteArea.setText(order.getNotes());
+                    addressArea.setText(order.getDeliveryAddress());
+                    payBox.setSelectedItem(order.getPayStat());
+                    statusBox.setSelectedItem("Open");
+                    
+
+                }
+
+                else{
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please enter an ID", "Error", JOptionPane.ERROR_MESSAGE);
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                }
 
             }
+
+            if(e.getSource() == editOrder){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
+
+                Boolean exists = false;
+
+                if(iDField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                     iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDField.getText().strip());
+                    for(Order o: orders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+
+                    }
+
+                    if(exists == true){
+
+                        String description = descArea.getText().strip();
+                        String notes = noteArea.getText().strip();
+                        String payStatus = String.valueOf(payBox.getSelectedItem());
+                        String deadline = deadlineField.getText().strip();
+
+                        if(!isValidDate(deadline)){
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Not a valid date", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        String address = addressArea.getText().strip();
+                        String p = priceField.getText().strip();
+
+                        if(!isFloat(p)){
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Price Must Be A Number.");
+                            return;
+                        }
+                        float price = Float.parseFloat(priceField.getText());
+
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Save new details?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            OrderController conn = new OrderController();
+                            Boolean success = conn.editOrder(description, notes, payStatus, address, price, deadline, iD);
+
+                            if(success == true){
+                                addToTable();
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Successful");
+                                iDField.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                                addressArea.setText(" ");
+                            }
+
+                            else{
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update failed");
+                                iDField.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                                addressArea.setText(" ");
+                            }
+                         }
+
+                        else{
+                    
+                            iDField.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                            addressArea.setText(" ");
+                        }
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
+
+
+                }
+
+
+                
+                
+
+
+            }
+
+            if(e.getSource() == submit){
+
+                Boolean exists = false;
+                Boolean success = false;
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
+
+               
+
+                if(iDField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDField.getText().strip());
+                    for(Order o: orders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+                    }
+
+                    if((exists == true) && (String.valueOf(statusBox.getSelectedItem()).equals("Complete"))){
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Complete Order?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            OrderController conn = new OrderController();
+                            success = conn.completeOrder(iD);
+
+                            if(success == true){
+                                addToTable();                                
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Completed");
+                                iDField.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                                addressArea.setText(" ");
+                            }
+
+                            else{
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: Order not Completed");
+                            }
+
+                        }
+
+                        else
+                        {
+                            iDField.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                            addressArea.setText(" ");
+                        }
+
+
+                    }
+
+                    else if(String.valueOf(statusBox.getSelectedItem()).equals("Open")){
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "To complete this order, please select the correct status option.");
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist");
+                        System.out.println(String.valueOf(statusBox.getSelectedItem()));
+
+                    }
+
+
+
+
+            }
+
+            
            
         }
 
+        if(e.getSource() == deleteOrder){
+            Boolean exists = false;
+            Boolean success = false;
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            
+
+                if(iDField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, No Order Selected.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                String ID = iDField.getText().strip();
+                if(!isInteger(ID)){
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                    return;
+                }
+
+                else{
+                    int iD = Integer.parseInt(iDField.getText().strip());
+                    for(Order o: orders)
+                    {
+                        if(o.getID() == iD){
+                            exists = true;       
+                        }
+                    }
+
+                    if(exists == true){
+                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+
+                        if(response == JOptionPane.YES_OPTION){
+                            success = new OrderController().cancelOrder(iD);
+                            if(success == true){
+                                addToTable();
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.");
+                                iDField.setText(" ");
+                                priceField.setText(" ");
+                                deadlineField.setText(" ");
+                                descArea.setText(" ");
+                                noteArea.setText(" ");
+                                addressArea.setText(" ");
+
+                            }
+                        }
+
+                        else{
+                            iDField.setText(" ");
+                            priceField.setText(" ");
+                            deadlineField.setText(" ");
+                            descArea.setText(" ");
+                            noteArea.setText(" ");
+                            addressArea.setText(" ");
+                        }
+
+                    }
+
+                    else{
+
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, Order Does Not Exist.");
+                        iDField.setText(" ");
+                        priceField.setText(" ");
+                        deadlineField.setText(" ");
+                        descArea.setText(" ");
+                        noteArea.setText(" ");
+                        addressArea.setText(" ");
+                        
+
+                    }
+
+                }
+
+
+                
+
+        }
+
+        if(e.getSource() == viewCompleted){
+            setVisible(false);
+            ViewCompleteOrdersUI viewComp = new ViewCompleteOrdersUI(ViewOrdersUI.this);
+
+
+        }
+
+        if(e.getSource() == exit){
+            ViewOrdersUI.this.setVisible(false);
+            home.setVisible(true);
+
+        }
+
     }
+
+
+    
+
+}
+
+private class SortListener implements ActionListener{
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == sortByDeadline){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new DeadlineSort());
+            addToTable(orders);
+
+
+        }
+
+        if(e.getSource() == sortByID){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new OrderIDSort());
+            addToTable(orders);
+
+        }
+
+        if(e.getSource() == sortByStatus){
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
+            Collections.sort(orders, new StatusSort());
+            addToTable(orders);
+
+        }
+    }
+}
 
 }

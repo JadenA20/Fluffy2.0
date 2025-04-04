@@ -15,9 +15,11 @@ public class LoginUI extends JFrame {
 
     private JButton login, exit;
     private JLabel title, usernameLabel, passwordLabel;
-    private JTextField usernameField, passwordField;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
     private JPanel mainPanel, breakPanel;
     private LoginUI LoginUI;
+    private Baker currentUser = new Baker();
 
 
     public LoginUI() {
@@ -81,7 +83,7 @@ public class LoginUI extends JFrame {
         mainPanel.add(passwordLabel, con);
 
 
-        passwordField = new JTextField(20);                            //Password Textfield
+        passwordField = new JPasswordField(20);                            //Password Textfield
         passwordField.setBounds(20, 210, 200, 30);
         passwordField.setBackground(new Color(244, 235, 220));
         con.gridx = 1;
@@ -149,17 +151,31 @@ public class LoginUI extends JFrame {
                 }
 
                 else{
-
                     LoginController conn = new LoginController();
-                    if(conn.login(username, password) == true){
-                        HomeUI home = new HomeUI(LoginUI.this);
-                        setVisible(false);
+                    Object [] array = conn.login(username, password);
+
+                    if(array[1] == null){
+                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+
                     }
 
                     else{
-                        
-                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        if(array[0].equals(true)){
+                            currentUser = (Baker)array[1];
+                            System.out.println(currentUser);
+                            HomeUI home = new HomeUI(LoginUI.this);
+                            setVisible(false);
+                        }
+    
+                        else{
+                            
+                            JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
+
+                    
+                    
 
                 }     
 
@@ -173,6 +189,10 @@ public class LoginUI extends JFrame {
 
         }
 
+    }
+
+    public Baker getCurrentUser(){
+        return currentUser;
     }
 
 }

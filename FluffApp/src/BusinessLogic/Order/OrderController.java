@@ -85,5 +85,48 @@ public class OrderController{
 
     }
 
-   
+
+    public ArrayList<Order> viewCurrentOrders(){
+        orders = new OrderTableController().getOrders("Select * From Orders Where Status = 0");
+        //System.out.println(orders);
+
+        return orders;
+    }
+
+    public ArrayList<Order> viewCompletedOrders(){
+        orders = new OrderTableController().getOrders("Select * From Orders Where Status = 1");
+        return orders;
+    }
+
+
+    public Boolean editOrder(String desc, String note, String paystat, String address, float price, String deadline, int id){
+        String query = String.format("UPDATE orders SET Description = '%s', Note = '%s', Price = %f, PayStatus = '%s', Address = '%s', Deadline = '%s' WHERE order_ID = %d", desc, note, price, paystat,address, deadline, id);
+
+
+        return new OrderTableController().editOrder(query);
+    }
+
+    public Boolean completeOrder(int iD){
+        Boolean success = false;
+        String query = String.format("UPDATE orders SET PayStatus = 'Completed', Date_Completed = CURRENT_DATE(), Status = 1 WHERE order_ID = %d", iD);
+        success = new OrderTableController().editOrder(query);
+
+        return success;
+    }
+
+
+    public Boolean cancelOrder(int iD){
+        Boolean success = false;
+        String query = String.format("DELETE FROM orders WHERE order_ID = %d", iD);
+        success = new OrderTableController().deleteOrder(query);
+
+        return success;
+    }
+
+    public ArrayList<Customer> viewCustomers(){
+        ArrayList<Customer> cust = new ArrayList<Customer>();
+        cust =  new CustomerTableController().getCustomers("select * from customers");
+        return cust;
+    }
+
 }

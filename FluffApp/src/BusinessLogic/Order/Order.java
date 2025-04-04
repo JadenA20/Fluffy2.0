@@ -37,33 +37,7 @@ public class Order {
         
     }
 
-    public void setStatus(){
-        this.status = false;
-        this.date_cmp = getCurrentDate();
-
-        if (this.payStat != "Complete"){
-            this.payStat = "Complete";
-        }  
-    }
-
-    public void setPaymentStatus(String p){
-        this.payStat = p;
-    }
-
-    public void setDescription(String desc){
-        this.desc = desc;
-
-    }
-
-    public void setEven (String event){
-        this.event = event;
-
-    }
-
-    public void setPrice(float p){
-        this.price = p;
-    }
-
+    
     public String getEvent(){
         return this.event;
 

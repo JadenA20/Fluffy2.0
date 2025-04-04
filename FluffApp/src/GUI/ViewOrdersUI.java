@@ -11,6 +11,9 @@ import BusinessLogic.Order.OrderController;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -452,6 +455,59 @@ public class ViewOrdersUI extends JFrame{
         }
     }
 
+    public Boolean isFloat(String str){
+        if(str == null  || str.isEmpty()){
+            return false;
+        }
+
+        try {
+            Float.parseFloat(str);
+            return true;
+            
+        } catch (Exception e) {
+            return false;
+
+            // TODO: handle exception
+        }
+    }
+
+    public Boolean validDateFormat(String date){
+        try{
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate.parse(date, format);
+            return true;
+        }
+
+        catch(DateTimeParseException e){
+            System.out.println(e);
+            return false;
+            
+        }
+
+
+
+    }
+
+    public Boolean isValidDate(String date){
+        if(validDateFormat(date)){
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateEntered = LocalDate.parse(date, format);
+            LocalDate currnDate = LocalDate.now();
+
+            if(dateEntered.isAfter(currnDate) || dateEntered.isEqual(currnDate)){
+                return true;
+            }
+
+            else{
+                return false;
+            }
+        }
+
+        else{
+            return false;
+        }
+    }
+
     private class  ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -462,6 +518,8 @@ public class ViewOrdersUI extends JFrame{
             }
 
             if(e.getSource() == search){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
                 Boolean exists = false;
 
                
@@ -482,7 +540,7 @@ public class ViewOrdersUI extends JFrame{
                     Order order = new Order();
                     int iD = Integer.parseInt(iDField.getText().strip());
 
-                    for(Order o: currentOrders){
+                    for(Order o: orders){
                         if (o.getID() == iD){
                             order = o;
                             exists = true;
@@ -523,6 +581,8 @@ public class ViewOrdersUI extends JFrame{
             }
 
             if(e.getSource() == editOrder){
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
 
                 Boolean exists = false;
 
@@ -551,7 +611,7 @@ public class ViewOrdersUI extends JFrame{
 
                 else{
                     int iD = Integer.parseInt(iDField.getText().strip());
-                    for(Order o: currentOrders)
+                    for(Order o: orders)
                     {
                         if(o.getID() == iD){
                             exists = true;       
@@ -561,19 +621,24 @@ public class ViewOrdersUI extends JFrame{
 
                     if(exists == true){
 
-                        String reg = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$";
-
-                        String description = descArea.getText();
-                        String notes = noteArea.getText();
+                        String description = descArea.getText().strip();
+                        String notes = noteArea.getText().strip();
                         String payStatus = String.valueOf(payBox.getSelectedItem());
-                        String deadline = deadlineField.getText();
-                        String address = addressArea.getText();
-                        float price = Float.parseFloat(priceField.getText());
+                        String deadline = deadlineField.getText().strip();
 
-                        if(!(Pattern.matches(reg, deadline))){
+                        if(!isValidDate(deadline)){
                             JOptionPane.showMessageDialog(ViewOrdersUI.this, "Not a valid date", "Error", JOptionPane.ERROR_MESSAGE);
-
+                            return;
                         }
+
+                        String address = addressArea.getText().strip();
+                        String p = priceField.getText().strip();
+
+                        if(!isFloat(p)){
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Price Must Be A Number.");
+                            return;
+                        }
+                        float price = Float.parseFloat(priceField.getText());
 
                         int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Save new details?");
 
@@ -635,6 +700,8 @@ public class ViewOrdersUI extends JFrame{
 
                 Boolean exists = false;
                 Boolean success = false;
+                ArrayList<Order> orders = new ArrayList<Order>();
+                orders = new OrderController().viewCurrentOrders();
 
                
 
@@ -663,7 +730,7 @@ public class ViewOrdersUI extends JFrame{
 
                 else{
                     int iD = Integer.parseInt(iDField.getText().strip());
-                    for(Order o: currentOrders)
+                    for(Order o: orders)
                     {
                         if(o.getID() == iD){
                             exists = true;       
@@ -731,6 +798,8 @@ public class ViewOrdersUI extends JFrame{
         if(e.getSource() == deleteOrder){
             Boolean exists = false;
             Boolean success = false;
+            ArrayList<Order> orders = new ArrayList<Order>();
+            orders = new OrderController().viewCurrentOrders();
             
 
                 if(iDField.getText().isEmpty()){
@@ -758,7 +827,7 @@ public class ViewOrdersUI extends JFrame{
 
                 else{
                     int iD = Integer.parseInt(iDField.getText().strip());
-                    for(Order o: currentOrders)
+                    for(Order o: orders)
                     {
                         if(o.getID() == iD){
                             exists = true;       

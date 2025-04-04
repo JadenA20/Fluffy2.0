@@ -5,6 +5,10 @@ import BusinessLogic.Order.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.zip.DataFormatException;
 
 public class CreateOrderUI extends JFrame{
     private JButton addOrder, cancelOrder;
@@ -185,32 +189,101 @@ public class CreateOrderUI extends JFrame{
 
     }
 
+    public Boolean isFloat(String str){
+        if(str == null  || str.isEmpty()){
+            return false;
+        }
+
+        try {
+            Float.parseFloat(str);
+            return true;
+            
+        } catch (Exception e) {
+            return false;
+
+            // TODO: handle exception
+        }
+    }
+
+    public Boolean validDateFormat(String date){
+        try{
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate.parse(date, format);
+            return true;
+        }
+
+        catch(DateTimeParseException e){
+            System.out.println(e);
+            return false;
+            
+        }
+
+
+
+    }
+
+    public Boolean isValidDate(String date){
+        if(validDateFormat(date)){
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateEntered = LocalDate.parse(date, format);
+            LocalDate currnDate = LocalDate.now();
+
+            if(dateEntered.isAfter(currnDate) || dateEntered.isEqual(currnDate)){
+                return true;
+            }
+
+            else{
+                return false;
+            }
+        }
+
+        else{
+            return false;
+        }
+    }
+
     private class ButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             
             if(e.getSource() == addOrder){
                 try{
-                    String firstName = fname.getText().trim();
-                    String lastName = lname.getText().trim();
-                    //String addr = address.getText().trim();
-                    String teleNum = phone.getText().trim();
-                    String flav = flavour.getText().trim();
-                    String eventType = event.getText().trim();
-                    float priceAmt = Float.parseFloat(price.getText().trim());
-                    String description = desc.getText().trim();
-                    String add_notes = addNote.getText().trim();
-                    String method = contactField.getText().trim();
-                    String destination = delivery.getText().trim();
-                    String payStatus = (String) paystat.getSelectedItem();
-                    String deadline = dueDate.getText();
 
-                    if((firstName.equals("")) || (lastName.isEmpty()) || (teleNum.isEmpty()) || (flav.isEmpty()) || (eventType.isEmpty()) || (method.isEmpty()) || (description.isEmpty()) ){
+                    if((fname.getText().isEmpty() || lname.getText().isEmpty() || phone.getText().isEmpty() || flavour.getText().isEmpty() || event.getText().isEmpty() || contactField.getText().isEmpty() || desc.getText().isEmpty() || dueDate.getText().isEmpty())){
                         JOptionPane.showMessageDialog(CreateOrderUI.this, "Empty Fields Detected: Please Enter Order Information.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
 
                     }
 
+                    if(!isFloat(price.getText().strip())){
+                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Error: Price must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+
+                    }
+
+                    String date = dueDate.getText().strip();
+
+                    if(!isValidDate(date)){
+                        JOptionPane.showMessageDialog(CreateOrderUI.this, "Error: Not a valid date.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
                     else{
+
+                        String firstName = fname.getText().trim();
+                        String lastName = lname.getText().trim();
+                        //String addr = address.getText().trim();
+                        String teleNum = phone.getText().trim();
+                        String flav = flavour.getText().trim();
+                        String eventType = event.getText().trim();
+                        float priceAmt = Float.parseFloat(price.getText().trim());
+                        String description = desc.getText().trim();
+                        String add_notes = addNote.getText().trim();
+                        String method = contactField.getText().trim();
+                        String destination = delivery.getText().trim();
+                        String payStatus = (String) paystat.getSelectedItem();
+                        String deadline = dueDate.getText();
+
+
                         OrderController Controls = new OrderController();
                         Boolean success = Controls.createOrder(firstName, lastName, teleNum, flav, eventType, deadline, priceAmt, description, add_notes, method, destination, payStatus);
 

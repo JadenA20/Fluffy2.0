@@ -11,6 +11,8 @@ import BusinessLogic.Comparator.QuantitySort;
 import BusinessLogic.Inventory.*;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
+import Security.Authorization;
+import Security.Baker;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,12 +28,16 @@ public class ViewInventoryUI extends JFrame {
     private JTable table;
     private JPanel panel;
     private JScrollPane scrollPane;
-    private HomeUI homeUI;
+    private HomeUI home;
+    private LoginUI login;
+    private ViewInventoryUI inventory;
 
 
-    public ViewInventoryUI(HomeUI homeUI){
+    public ViewInventoryUI(HomeUI Home, LoginUI Login){
 
-        this.homeUI = homeUI;
+        this.home = Home;
+        this.login = Login;
+        this.inventory = this;
 
         // Instantiate JLabels
 
@@ -505,30 +511,66 @@ public class ViewInventoryUI extends JFrame {
                        }
 
                        if(exists == true){
-                            int response = JOptionPane.showConfirmDialog(ViewInventoryUI.this, "Delete Item?");
-                            if(response == JOptionPane.YES_OPTION){
-                                success = new InventoryController().deleteItem(iD);
 
+                            Baker current_baker = login.getCurrentUser();
+                            boolean authorized = new Authorization().authorizeBaker(current_baker);
+                            String key;
+                            Boolean matched = false;
+                            Boolean checked = false;
+                            
+                            
+                            if (authorized == false) {
+                
+                                key = JOptionPane.showInputDialog(null, "Admin Not Detected. Please enter admin passkey.", JOptionPane.ERROR_MESSAGE);
+                    
+                                boolean match = new Authorization().checkPasskey(key);
+                    
+                                    if (match == false) {
+
+                                        JOptionPane.showMessageDialog(ViewInventoryUI.this, "Invalid Passkey. Please try again.");
+                                        
+                                    }
+
+                                    else {
+                                    
+                                        matched = true;
+                                    } 
+                            
+                            } 
+                        
+                            else {
+
+                                checked = true;
+                        
                             }
 
-                            if(success == true){
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted");
-                                addToTable();
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                            if ((checked == true) || (matched == true)) {
+
+                                int response = JOptionPane.showConfirmDialog(ViewInventoryUI.this, "Delete Item?");
+                                if(response == JOptionPane.YES_OPTION){
+                                    success = new InventoryController().deleteItem(iD);
+
+                                }
+
+                                if(success == true){
+                                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted");
+                                    addToTable();
+                                    idField.setText(" ");
+                                    descField.setText(" ");
+                                    quantityField.setText(" ");
+                                    itemField.setText(" ");
 
 
-                            }
+                                }
 
-                            else{
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Deletion Failed");
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                else{
+                                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Deletion Failed");
+                                    idField.setText(" ");
+                                    descField.setText(" ");
+                                    quantityField.setText(" ");
+                                    itemField.setText(" ");
 
+                                }
                             }
                        }
 
@@ -539,8 +581,8 @@ public class ViewInventoryUI extends JFrame {
                                 quantityField.setText(" ");
                                 itemField.setText(" ");
                        }
-                       }
-                       }
+                     }
+                 }
                     
                 
             
@@ -597,7 +639,7 @@ public class ViewInventoryUI extends JFrame {
 
             if(e.getSource() == exit){
                 setVisible(false);
-                homeUI.setVisible(true);
+                home.setVisible(true);
                 
             }
         }

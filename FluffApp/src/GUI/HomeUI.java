@@ -1,10 +1,10 @@
 package GUI;
 
+import Security.Authorization;
+import Security.Baker;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -17,13 +17,14 @@ public class HomeUI extends JFrame {
     private JButton register, orders, inventory, exit, customers;
     private JPanel jPanel;
     private HomeUI HomeUI;
-    private LoginUI LoginUI;
+    private LoginUI Login;
 
 
     public HomeUI(LoginUI LoginUI){
 
         this.HomeUI = this;
-        LoginUI = LoginUI;
+        this.Login = LoginUI;
+        //LoginUI = LoginUI;
        
        //Set Panel Title
        
@@ -36,7 +37,7 @@ public class HomeUI extends JFrame {
 
         
 
-        title = new JLabel("Welcome " + LoginUI.getCurrentUser().getFName());                               
+        title = new JLabel("Welcome, " + LoginUI.getCurrentUser().getFName() + "!");                               
         title.setForeground(new Color(100, 67, 59));
         title.setFont(ver2);
 
@@ -145,17 +146,26 @@ public class HomeUI extends JFrame {
           
             if (e.getSource() == register){
 
-              //Need to check baker account type first
-            
+              //Ensuring baker is authorized 
+                Baker current_baker = Login.getCurrentUser();
+                boolean authorized = new Authorization().authorizeBaker(current_baker);
 
-                setVisible(false);
-                RegisterUI registerUI = new RegisterUI(HomeUI.this, LoginUI);
+                if (authorized == true){
+                    setVisible(false);
+                    RegisterUI registerUI = new RegisterUI(HomeUI.this, Login);
     
+                }
+                else {
+
+                    JOptionPane.showMessageDialog(HomeUI.this, "You are not authorized to complete this task.");
+                }
+            
+                
             }
 
             if(e.getSource() == orders){
                 setVisible(false);
-                ViewOrdersUI view = new ViewOrdersUI(HomeUI.this, LoginUI);
+                ViewOrdersUI view = new ViewOrdersUI(HomeUI.this, Login);
                 view.setVisible(true);
             }
 
@@ -166,7 +176,7 @@ public class HomeUI extends JFrame {
             }
 
             if(e.getSource() == inventory){
-                ViewInventoryUI inventoryUI = new ViewInventoryUI(HomeUI);
+                ViewInventoryUI inventoryUI = new ViewInventoryUI(HomeUI.this, Login);
                 HomeUI.setVisible(false);
             }
 

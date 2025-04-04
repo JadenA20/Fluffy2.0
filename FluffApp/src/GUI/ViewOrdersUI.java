@@ -8,6 +8,10 @@ import BusinessLogic.Comparator.OrderIDSort;
 import BusinessLogic.Comparator.StatusSort;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
+import Database.UserTableController;
+import Security.Admin;
+import Security.Authorization;
+import Security.Baker;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,11 +32,13 @@ public class ViewOrdersUI extends JFrame{
     private JComboBox payBox, statusBox;
     private JScrollPane scrollPane1, scrollPane2, scrollPane3, scrollPane4;
     private JButton createOrder, editOrder, deleteOrder, sortByDeadline, search, sortByID, sortByStatus, viewCompleted, exit, submit;
+    private JPasswordField field;
     private JTable ordersTable;
     private JPanel panel;
     private HomeUI home;
     private LoginUI login;
     private ArrayList<Order> currentOrders;
+    
 
     public ViewOrdersUI(HomeUI Home, LoginUI Login)
     {
@@ -109,7 +115,8 @@ public class ViewOrdersUI extends JFrame{
         addressArea.setForeground(new Color(100, 67, 59));
         addressArea.setRows(5);
 
-
+        //Instantiate Password Field
+        field = new JPasswordField();
        
 
         //Instantiate ComboBox
@@ -796,6 +803,7 @@ public class ViewOrdersUI extends JFrame{
         }
 
         if(e.getSource() == deleteOrder){
+    
             Boolean exists = false;
             Boolean success = false;
             ArrayList<Order> orders = new ArrayList<Order>();
@@ -835,30 +843,67 @@ public class ViewOrdersUI extends JFrame{
                     }
 
                     if(exists == true){
-                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+                       
+                        Baker current_baker = login.getCurrentUser();
+                        boolean authorized = new Authorization().authorizeBaker(current_baker);
+                        String key;
+                        Boolean matched = false;
+                        Boolean checked = false;
+                        
+                        
+                        if (authorized == false) {
+            
+                           key = JOptionPane.showInputDialog(null, "Admin Not Detected. Please enter admin passkey.", JOptionPane.ERROR_MESSAGE);
+            
+                           boolean match = new Authorization().checkPasskey(key);
+            
+                            if (match == false) {
 
-                        if(response == JOptionPane.YES_OPTION){
-                            success = new OrderController().cancelOrder(iD);
-                            if(success == true){
-                                addToTable();
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Invalid Passkey. Please try again.");
+                                
+                            }
+
+                            else {
+                            
+                                matched = true;
+                            } 
+                        
+                        } 
+                       
+                        else {
+
+                            checked = true;
+                       
+                        }
+
+                        if ((checked == true) || (matched == true)) {
+
+                            int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+
+                            if(response == JOptionPane.YES_OPTION){
+                                success = new OrderController().cancelOrder(iD);
+                                if(success == true){
+                                    addToTable();
+                                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.");
+                                    iDField.setText(" ");
+                                    priceField.setText(" ");
+                                    deadlineField.setText(" ");
+                                    descArea.setText(" ");
+                                    noteArea.setText(" ");
+                                    addressArea.setText(" ");
+
+                                }
+                            }
+
+                            else{
                                 iDField.setText(" ");
                                 priceField.setText(" ");
                                 deadlineField.setText(" ");
                                 descArea.setText(" ");
                                 noteArea.setText(" ");
                                 addressArea.setText(" ");
-
                             }
-                        }
 
-                        else{
-                            iDField.setText(" ");
-                            priceField.setText(" ");
-                            deadlineField.setText(" ");
-                            descArea.setText(" ");
-                            noteArea.setText(" ");
-                            addressArea.setText(" ");
                         }
 
                     }

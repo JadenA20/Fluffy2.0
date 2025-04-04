@@ -528,7 +528,7 @@ public class ViewOrdersUI extends JFrame{
                     String ID = iDField.getText().strip();
 
                     if(!isInteger(ID)){
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -549,7 +549,7 @@ public class ViewOrdersUI extends JFrame{
                     }
 
                     if (exists == false){
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
 
                     }
@@ -569,7 +569,7 @@ public class ViewOrdersUI extends JFrame{
                 }
 
                 else{
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please enter an ID", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please Enter An ID", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -587,7 +587,7 @@ public class ViewOrdersUI extends JFrame{
                 Boolean exists = false;
 
                 if(iDField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
                      iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -599,7 +599,7 @@ public class ViewOrdersUI extends JFrame{
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -627,7 +627,7 @@ public class ViewOrdersUI extends JFrame{
                         String deadline = deadlineField.getText().strip();
 
                         if(!isValidDate(deadline)){
-                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Not a valid date", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Not A Valid Date", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
 
@@ -635,7 +635,7 @@ public class ViewOrdersUI extends JFrame{
                         String p = priceField.getText().strip();
 
                         if(!isFloat(p)){
-                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Price Must Be A Number.");
+                            JOptionPane.showMessageDialog(ViewOrdersUI.this, "Price Must Be A Number.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                         float price = Float.parseFloat(priceField.getText());
@@ -648,7 +648,7 @@ public class ViewOrdersUI extends JFrame{
 
                             if(success == true){
                                 addToTable();
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Successful");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 iDField.setText(" ");
                                 priceField.setText(" ");
                                 deadlineField.setText(" ");
@@ -658,7 +658,7 @@ public class ViewOrdersUI extends JFrame{
                             }
 
                             else{
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update failed");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE);
                                 iDField.setText(" ");
                                 priceField.setText(" ");
                                 deadlineField.setText(" ");
@@ -682,7 +682,7 @@ public class ViewOrdersUI extends JFrame{
 
                     else{
 
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist.", "Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
@@ -706,7 +706,7 @@ public class ViewOrdersUI extends JFrame{
                
 
                 if(iDField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, no Order selected.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -718,7 +718,7 @@ public class ViewOrdersUI extends JFrame{
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -746,7 +746,7 @@ public class ViewOrdersUI extends JFrame{
 
                             if(success == true){
                                 addToTable();                                
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Completed");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Completed", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 iDField.setText(" ");
                                 priceField.setText(" ");
                                 deadlineField.setText(" ");
@@ -756,7 +756,7 @@ public class ViewOrdersUI extends JFrame{
                             }
 
                             else{
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: Order not Completed");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Not Completed", "Error", JOptionPane.ERROR_MESSAGE);
                             }
 
                         }
@@ -775,13 +775,13 @@ public class ViewOrdersUI extends JFrame{
                     }
 
                     else if(String.valueOf(statusBox.getSelectedItem()).equals("Open")){
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "To complete this order, please select the correct status option.");
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "To Complete This Order, Please Select The Correct Status Option.", "Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
                     else{
 
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order does not exist");
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist","Error", JOptionPane.ERROR_MESSAGE);
                         System.out.println(String.valueOf(statusBox.getSelectedItem()));
 
                     }
@@ -803,7 +803,7 @@ public class ViewOrdersUI extends JFrame{
             
 
                 if(iDField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, No Order Selected.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -815,7 +815,7 @@ public class ViewOrdersUI extends JFrame{
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
-                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error: ID Must Be An Integer.");
+                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");
@@ -841,7 +841,7 @@ public class ViewOrdersUI extends JFrame{
                             success = new OrderController().cancelOrder(iD);
                             if(success == true){
                                 addToTable();
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.");
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 iDField.setText(" ");
                                 priceField.setText(" ");
                                 deadlineField.setText(" ");
@@ -865,7 +865,7 @@ public class ViewOrdersUI extends JFrame{
 
                     else{
 
-                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Error, Order Does Not Exist.");
+                        JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist.", "Error", JOptionPane.ERROR_MESSAGE);
                         iDField.setText(" ");
                         priceField.setText(" ");
                         deadlineField.setText(" ");

@@ -398,7 +398,7 @@ public class ViewInventoryUI extends JFrame {
             if(e.getSource() == edit){
                 String id = idField.getText();
                 if(!(isInteger(id)) || id.isEmpty()){
-                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Please enter a valid ID");
+                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Please Enter A Valid ID", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
                 else{
@@ -419,7 +419,7 @@ public class ViewInventoryUI extends JFrame {
                         String description = descField.getText();
                         String quantity = quantityField.getText();
                         if(!isInteger(quantity)){
-                            JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Must Enter an Integer.");
+                            JOptionPane.showMessageDialog(ViewInventoryUI.this, "ID Must Enter an Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
 
@@ -433,7 +433,7 @@ public class ViewInventoryUI extends JFrame {
                             Boolean success = new InventoryController().editItem(iD, name, description, type, status, quant);
 
                             if(success == true){
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Details Updated");
+                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Details Updated", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 idField.setText(" ");
                                 descField.setText(" ");
                                 quantityField.setText(" ");
@@ -444,7 +444,7 @@ public class ViewInventoryUI extends JFrame {
                             }
 
                             else{
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Update Failed");
+                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE);
                                 idField.setText(" ");
                                 descField.setText(" ");
                                 quantityField.setText(" ");
@@ -468,7 +468,7 @@ public class ViewInventoryUI extends JFrame {
 
                     else{
 
-                        JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Item Does Not Exist");
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
@@ -486,13 +486,13 @@ public class ViewInventoryUI extends JFrame {
                 itemList = new InventoryController().viewRecords();
 
                     if (idField.getText().isEmpty()){
-                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Error: No item has been selected." );
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID Number.", "Error", JOptionPane.ERROR_MESSAGE );
                     }
                     
                     else{
                         String id = idField.getText();
                         if(!isInteger(id)){
-                            JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: ID must an Integer.");
+                            JOptionPane.showMessageDialog(ViewInventoryUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
 
                         }
@@ -512,7 +512,7 @@ public class ViewInventoryUI extends JFrame {
                             }
 
                             if(success == true){
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted");
+                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 addToTable();
                                 idField.setText(" ");
                                 descField.setText(" ");
@@ -523,7 +523,7 @@ public class ViewInventoryUI extends JFrame {
                             }
 
                             else{
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Deletion Failed");
+                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Deletion Failed", "Error", JOptionPane.ERROR_MESSAGE);
                                 idField.setText(" ");
                                 descField.setText(" ");
                                 quantityField.setText(" ");
@@ -533,7 +533,7 @@ public class ViewInventoryUI extends JFrame {
                        }
 
                        else{
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Error: Item Does Not Exist");
+                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE);
                                 idField.setText(" ");
                                 descField.setText(" ");
                                 quantityField.setText(" ");
@@ -553,7 +553,7 @@ public class ViewInventoryUI extends JFrame {
                 Boolean exists = false;
 
                 if(idField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please enter an ID number" );
+                    JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID Number", "Error", JOptionPane.ERROR_MESSAGE );
                 }
                 
 
@@ -581,7 +581,7 @@ public class ViewInventoryUI extends JFrame {
 
                     else{
 
-                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Order Does Not Exist" );
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Order Does Not Exist" , "Error", JOptionPane.ERROR_MESSAGE );
 
                     }
                     

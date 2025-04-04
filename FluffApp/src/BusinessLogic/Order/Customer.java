@@ -26,22 +26,6 @@ public class Customer {
         return "Customer{id=" + this.iD + ", name='" + getName() + "', email='}";
     }
 
-    public void setFname(String fName){
-        this.fname = fName;
-    }
-
-    public void setLname(String lName){
-        this.lname = lName;
-    }
-
-    public void setPhone(String phone){
-        this.phone = phone;
-    }
-
-
-    public void setMethod(String contact){
-        this.method = contact;
-    }
 
     public int getID(){
         return this.iD;

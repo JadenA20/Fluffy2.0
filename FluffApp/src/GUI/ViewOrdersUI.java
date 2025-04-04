@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 
 import BusinessLogic.Comparator.DeadlineSort;
@@ -43,63 +44,63 @@ public class ViewOrdersUI extends JFrame{
         this.login = Login;
 
         //Instantiate Labels
-        title = new JLabel("Orders"); //JLabel 1
-        title.setFont(new Font("Courier New", 1, 24)); // NOI18N
+        title = new JLabel("Orders"); 
+        title.setFont(new Font("Courier New", 1, 24)); 
         title.setForeground(new Color(100, 67, 59));
 
 
-        notes = new JLabel("Notes: "); //JLabel 2
-        notes.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        notes = new JLabel("Notes: "); 
+        notes.setFont(new Font("Courier New", 1, 14)); 
         notes.setForeground(new Color(100, 67, 59));
 
 
-        description = new JLabel("Description"); //JLabel 3
-        description.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        description = new JLabel("Description"); 
+        description.setFont(new Font("Courier New", 1, 14)); 
         description.setForeground(new Color(100, 67, 59));
     
 
-        orderID = new JLabel("Order ID: "); //JLabel 4
-        orderID.setFont(new Font("Courier New", 1, 12)); // NOI18N
+        orderID = new JLabel("Order ID: "); 
+        orderID.setFont(new Font("Courier New", 1, 12)); 
         orderID.setForeground(new Color(100, 67, 59));
         
-        deadline = new JLabel("Deadline: "); //JLabel 5
-        deadline.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        deadline = new JLabel("Deadline: "); 
+        deadline.setFont(new Font("Courier New", 1, 14)); 
         deadline.setForeground(new Color(100, 67, 59));
 
         address = new JLabel("Address");
-        address.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        address.setFont(new Font("Courier New", 1, 14)); 
         address.setForeground(new Color(100, 67, 59));
 
         
-        price = new JLabel("Price: "); //JLabel 6
-        price.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        price = new JLabel("Price: "); 
+        price.setFont(new Font("Courier New", 1, 14)); 
         price.setForeground(new Color(100, 67, 59));
     
 
-        paymentStatus = new JLabel("Payment Status: "); //JLabel 7
-        paymentStatus.setFont(new Font("Courier New", 1, 13)); // NOI18N
+        paymentStatus = new JLabel("Payment Status: "); 
+        paymentStatus.setFont(new Font("Courier New", 1, 13)); 
         paymentStatus.setForeground(new Color(100, 67, 59));
-        paymentStatus.setPreferredSize(new Dimension(200, 30)); // Adjust width as needed
+        paymentStatus.setPreferredSize(new Dimension(200, 30)); 
 
     
 
-        status = new JLabel("Status: "); //JLabel 8
-        status.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        status = new JLabel("Status: "); 
+        status.setFont(new Font("Courier New", 1, 14));
         status.setForeground(new Color(100, 67, 59));
 
 
         //Instantiate textfeilds
-        iDField = new JTextField(10); //1
-        deadlineField = new JTextField(10); //3
-        priceField = new JTextField(10); //5
+        iDField = new JTextField(10); 
+        deadlineField = new JTextField(10); 
+        priceField = new JTextField(10); 
 
         //Instantiate TextArea
-        descArea = new JTextArea(); //1
+        descArea = new JTextArea(); 
         descArea.setColumns(20);
         descArea.setForeground(new Color(100, 67, 59));
         descArea.setRows(5);
 
-        noteArea = new JTextArea(); //2
+        noteArea = new JTextArea(); 
         noteArea.setColumns(20);
         noteArea.setForeground(new Color(100, 67, 59));
         noteArea.setRows(5);
@@ -113,93 +114,93 @@ public class ViewOrdersUI extends JFrame{
        
 
         //Instantiate ComboBox
-        payBox = new JComboBox(); //1
+        payBox = new JComboBox(); 
         payBox.setForeground(new Color(100, 67, 59));
         payBox.setFont(new Font("Courier New", 1, 14));
         payBox.setModel(new DefaultComboBoxModel<>(new String[] { "Pending", "Deposited", "Completed"}));
 
-        statusBox = new JComboBox<>(); //3
+        statusBox = new JComboBox<>(); 
         statusBox.setForeground(new Color(100, 67, 59));
         statusBox.setFont(new Font("Courier New", 1, 14));
         statusBox.setModel(new DefaultComboBoxModel<>(new String[] { "Open", "Complete"}));
 
 
         //Instantiate scroll panel
-        scrollPane1 = new JScrollPane(); //1
+        scrollPane1 = new JScrollPane();
         scrollPane1.setViewportView(descArea);
 
-        scrollPane2 = new JScrollPane(); //2
+        scrollPane2 = new JScrollPane(); 
         scrollPane2.setViewportView(noteArea);
 
-        scrollPane3 = new JScrollPane(); //3
+        scrollPane3 = new JScrollPane(); 
 
         scrollPane4 = new JScrollPane();
         scrollPane4.setViewportView(addressArea);
        
         //Instantiate buttons
-        createOrder = new JButton("Create Order"); //1
+        createOrder = new JButton("Create Order"); 
         createOrder.setBackground(new Color(100, 67, 59));
-        createOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        createOrder.setFont(new Font("Courier New", 1, 14)); 
         createOrder.setForeground(new Color(255, 255, 255));
         createOrder.addActionListener(new ButtonListener());
     
 
-        editOrder = new JButton("Edit Order"); //2
+        editOrder = new JButton("Edit Order"); 
         editOrder.setBackground(new Color(100, 67, 59));
-        editOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        editOrder.setFont(new Font("Courier New", 1, 14)); 
         editOrder.setForeground(new Color(255, 255, 255));
         editOrder.addActionListener(new ButtonListener());
         
 
-        deleteOrder = new JButton("Cancel Order"); //3
+        deleteOrder = new JButton("Cancel Order"); 
         deleteOrder.setBackground(new Color(100, 67, 59));
-        deleteOrder.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        deleteOrder.setFont(new Font("Courier New", 1, 14)); 
         deleteOrder.setForeground(new Color(255, 255, 255));
         deleteOrder.addActionListener(new ButtonListener());
 
-        sortByDeadline = new JButton("Sort-by-Deadline"); //4
+        sortByDeadline = new JButton("Sort-by-Deadline"); 
         sortByDeadline.setBackground(new Color(100, 67, 59));
-        sortByDeadline.setFont(new Font("Courier New", 1, 12)); // NOI18N
+        sortByDeadline.setFont(new Font("Courier New", 1, 12)); 
         sortByDeadline.setForeground(new Color(255, 255, 255));
         sortByDeadline.addActionListener(new SortListener());
        
 
-        search = new JButton("Search"); //5
+        search = new JButton("Search"); 
         search.setBackground(new Color(100, 67, 59));
-        search.setFont(new Font("Courier New", 1, 10)); // NOI18N
+        search.setFont(new Font("Courier New", 1, 10)); 
         search.setForeground(new Color(255, 255, 255));
         search.addActionListener(new ButtonListener());
 
-        sortByID = new JButton("Sort-by-ID"); //6
+        sortByID = new JButton("Sort-by-ID"); 
         sortByID.setBackground(new Color(100, 67, 59));
-        sortByID.setFont(new Font("Courier New", 1, 12)); // NOI18N
+        sortByID.setFont(new Font("Courier New", 1, 12)); 
         sortByID.setForeground(new Color(255, 255, 255));
         sortByID.addActionListener(new SortListener());
        
 
-        sortByStatus = new JButton("Sort-by-Status"); //7
+        sortByStatus = new JButton("Sort-by-Status"); 
         sortByStatus.setBackground(new Color(100, 67, 59));
-        sortByStatus.setFont(new Font("Courier New", 1, 12)); // NOI18N
+        sortByStatus.setFont(new Font("Courier New", 1, 12)); 
         sortByStatus.setForeground(new Color(255, 255, 255));
         sortByStatus.addActionListener(new SortListener());
 
 
-        viewCompleted = new JButton("View Completed"); //8
+        viewCompleted = new JButton("View Completed"); 
         viewCompleted.setBackground(new Color(100, 67, 59));
-        viewCompleted.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        viewCompleted.setFont(new Font("Courier New", 1, 14)); 
         viewCompleted.setForeground(new Color(255, 255, 255));
         viewCompleted.addActionListener(new ButtonListener());
         
 
-        exit = new JButton("Exit"); //9
+        exit = new JButton("Exit"); 
         exit.setBackground(new Color(100, 67, 59));
-        exit.setFont(new Font("Courier New", 1, 14)); // NOI18N
+        exit.setFont(new Font("Courier New", 1, 14)); 
         exit.setForeground(new Color(255, 255, 255));
         exit.addActionListener(new ButtonListener());
 
-        submit = new JButton("Submit"); //10
+        submit = new JButton("Submit"); 
         submit.setBackground(new Color(100, 67, 59));
-        submit.setFont(new Font("Courier New", 1, 10)); // NOI18N
+        submit.setFont(new Font("Courier New", 1, 10)); 
         submit.setForeground(new Color(255, 255, 255));
         submit.addActionListener(new ButtonListener());;
         
@@ -208,10 +209,10 @@ public class ViewOrdersUI extends JFrame{
         //Instantiate table
         ordersTable = new JTable();
 
-        ordersTable.setBorder(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, Color.white, Color.black, Color.white, Color.white));
-        ordersTable.setFont(new Font("Courier New", 1, 12)); // NOI18N
+        ordersTable.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.white, Color.black, Color.white, Color.white));
+        ordersTable.setFont(new Font("Courier New", 1, 12)); 
         ordersTable.setForeground(new Color(100, 67, 59));
-        ordersTable.setModel(new javax.swing.table.DefaultTableModel(
+        ordersTable.setModel(new DefaultTableModel(
             new Object [][] {
           },
             new String [] {
@@ -386,7 +387,6 @@ public class ViewOrdersUI extends JFrame{
         addToTable();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        //setSize(new Dimension(900, 900));
         pack();
         
 

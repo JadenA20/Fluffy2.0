@@ -147,7 +147,7 @@ public class LoginUI extends JFrame {
 
                 if((username.equals("")) || (password.equals(""))){
                     //Error message
-                    JOptionPane.showMessageDialog(LoginUI.this, "Empty field detected. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginUI.this, "Empty Field Detected, Please Enter Login Information.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
                 else{
@@ -155,7 +155,7 @@ public class LoginUI extends JFrame {
                     Object [] array = conn.login(username, password);
 
                     if(array[1] == null){
-                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
 
                     }
 
@@ -169,7 +169,7 @@ public class LoginUI extends JFrame {
     
                         else{
                             
-                            JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
                         }
 
                     }

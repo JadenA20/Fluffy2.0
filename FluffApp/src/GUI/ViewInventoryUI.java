@@ -11,6 +11,8 @@ import BusinessLogic.Comparator.QuantitySort;
 import BusinessLogic.Inventory.*;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
+import Security.Authorization;
+import Security.Baker;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,11 +29,13 @@ public class ViewInventoryUI extends JFrame {
     private JPanel panel;
     private JScrollPane scrollPane;
     private HomeUI homeUI;
+    private LoginUI login;
 
 
-    public ViewInventoryUI(HomeUI homeUI){
+    public ViewInventoryUI(HomeUI homeUI, LoginUI login){
 
         this.homeUI = homeUI;
+        this.login = login;
 
         // Instantiate JLabels
 
@@ -434,10 +438,10 @@ public class ViewInventoryUI extends JFrame {
 
                             if(success == true){
                                 JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Details Updated", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                idField.setText("");
+                                descField.setText("");
+                                quantityField.setText("");
+                                itemField.setText("");
                                 addToTable();
                                 
     
@@ -445,19 +449,19 @@ public class ViewInventoryUI extends JFrame {
 
                             else{
                                 JOptionPane.showMessageDialog(ViewInventoryUI.this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE);
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                idField.setText("");
+                                descField.setText("");
+                                quantityField.setText("");
+                                itemField.setText("");
                             }
                             
                         }
 
                         else{
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                idField.setText("");
+                                descField.setText("");
+                                quantityField.setText("");
+                                itemField.setText("");
                         }
 
                        
@@ -486,11 +490,11 @@ public class ViewInventoryUI extends JFrame {
                 itemList = new InventoryController().viewRecords();
 
                     if (idField.getText().isEmpty()){
-                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID Number.", "Error", JOptionPane.ERROR_MESSAGE );
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID" , "Error", JOptionPane.ERROR_MESSAGE);
                     }
                     
                     else{
-                        String id = idField.getText();
+                        String id = idField.getText().strip();
                         if(!isInteger(id)){
                             JOptionPane.showMessageDialog(ViewInventoryUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
                             return;
@@ -505,95 +509,139 @@ public class ViewInventoryUI extends JFrame {
                        }
 
                        if(exists == true){
-                            int response = JOptionPane.showConfirmDialog(ViewInventoryUI.this, "Delete Item?");
-                            if(response == JOptionPane.YES_OPTION){
-                                success = new InventoryController().deleteItem(iD);
 
+                            Baker current_baker = login.getCurrentUser();
+                            boolean authorized = new Authorization().authorizeBaker(current_baker);
+                            String key;
+                            Boolean matched = false;
+                            Boolean checked = false;
+                            
+                            
+                            if (authorized == false) {
+                
+                                key = JOptionPane.showInputDialog(null, "Admin Not Detected. Please Enter Admin Passkey.", JOptionPane.ERROR_MESSAGE);
+                    
+                                boolean match = new Authorization().checkPasskey(key);
+                    
+                                    if (match == false) {
+
+                                        JOptionPane.showMessageDialog(ViewInventoryUI.this, "Invalid Passkey. Please Try Again.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        
+                                    }
+
+                                    else {
+                                    
+                                        matched = true;
+                                    } 
+                            
+                            } 
+                        
+                            else {
+
+                                checked = true;
+                        
                             }
 
-                            if(success == true){
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                addToTable();
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                            if ((checked == true) || (matched == true)) {
+
+                                int response = JOptionPane.showConfirmDialog(ViewInventoryUI.this, "Delete Item?");
+                                if(response == JOptionPane.YES_OPTION){
+                                    success = new InventoryController().deleteItem(iD);
+
+                                }
+
+                                if(success == true){
+                                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Successfully Deleted", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                    addToTable();
+                                    idField.setText("");
+                                    descField.setText("");
+                                    quantityField.setText("");
+                                    itemField.setText("");
 
 
-                            }
+                                }
 
-                            else{
-                                JOptionPane.showMessageDialog(ViewInventoryUI.this, "Deletion Failed", "Error", JOptionPane.ERROR_MESSAGE);
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                else{
+                                    JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Not Deleted", "Cancel", JOptionPane.INFORMATION_MESSAGE);
+                                    idField.setText("");
+                                    descField.setText("");
+                                    quantityField.setText("");
+                                    itemField.setText("");
 
+                                }
                             }
                        }
 
                        else{
                                 JOptionPane.showMessageDialog(ViewInventoryUI.this, "Item Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE);
-                                idField.setText(" ");
-                                descField.setText(" ");
-                                quantityField.setText(" ");
-                                itemField.setText(" ");
+                                idField.setText("");
+                                descField.setText("");
+                                quantityField.setText("");
+                                itemField.setText("");
                        }
-                       }
-                       }
+                     }
+                 }
+
+                 if(e.getSource() == search){
+                    ArrayList<Inventory> itemList = new ArrayList<Inventory>();
+                    itemList = new InventoryController().viewRecords();
+                    Inventory i  = new Inventory();
+                    Boolean exists = false;
+    
+                    if(idField.getText().strip().isEmpty()){
+                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID Number", "Error", JOptionPane.ERROR_MESSAGE );
+                    }
                     
-                
-            
-        
+    
+                    else{
+                        String ID = idField.getText().strip();
+                        if(!isInteger(ID)){
+                            JOptionPane.showMessageDialog(ViewInventoryUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
 
-            if(e.getSource() == search){
-                ArrayList<Inventory> itemList = new ArrayList<Inventory>();
-                itemList = new InventoryController().viewRecords();
-                Inventory i  = new Inventory();
-                Boolean exists = false;
-
-                if(idField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(ViewInventoryUI.this,"Please Enter An ID Number", "Error", JOptionPane.ERROR_MESSAGE );
-                }
-                
-
-                else{
-                    int iD = Integer.parseInt(idField.getText());
-                    for(Inventory inventory: itemList){
-                        if(inventory.getID() == iD){
-                            i = inventory;
-                            exists = true;
                         }
 
-                    }
 
-                    if(exists){
-                        itemField.setText(i.getName());
-                        descField.setText(i.getDesc());
-                        quantityField.setText(String.valueOf(i.getQuantity()));
-                        typeBox.setSelectedItem(i.getType());
-                        statusBox.setSelectedItem(i.getStatus());
-
-
-
-                        
-                    }
-
-                    else{
-
-                        JOptionPane.showMessageDialog(ViewInventoryUI.this,"Order Does Not Exist" , "Error", JOptionPane.ERROR_MESSAGE );
-
-                    }
-                    
-
-                }
-
-                
-                
+                        int iD = Integer.parseInt(idField.getText().strip());
+                        for(Inventory inventory: itemList){
+                            if(inventory.getID() == iD){
+                                i = inventory;
+                                exists = true;
+                            }
     
-
-                
-            }
+                        }
+    
+                        if(exists){
+                            itemField.setText(i.getName());
+                            descField.setText(i.getDesc());
+                            quantityField.setText(String.valueOf(i.getQuantity()));
+                            typeBox.setSelectedItem(i.getType());
+                            statusBox.setSelectedItem(i.getStatus());
+    
+    
+    
+                            
+                        }
+    
+                        else{
+    
+                            JOptionPane.showMessageDialog(ViewInventoryUI.this,"Order Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE );
+                            idField.setText("");
+                                descField.setText("");
+                                quantityField.setText("");
+                                itemField.setText("");
+    
+                        }
+                        
+    
+                    }
+    
+                    
+                    
+        
+    
+                    
+                }
 
             if(e.getSource() == exit){
                 setVisible(false);

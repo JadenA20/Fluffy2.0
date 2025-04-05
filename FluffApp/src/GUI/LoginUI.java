@@ -162,7 +162,7 @@ public class LoginUI extends JFrame {
                     else{
                         if(array[0].equals(true)){
                             currentUser = (Baker)array[1];
-                            System.out.println(currentUser);
+                            //System.out.println(currentUser);
                             HomeUI home = new HomeUI(LoginUI.this);
                             setVisible(false);
                         }

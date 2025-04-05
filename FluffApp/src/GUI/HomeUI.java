@@ -180,7 +180,7 @@ public class HomeUI extends JFrame {
             }
 
             if(e.getSource() == inventory){
-                ViewInventoryUI inventoryUI = new ViewInventoryUI(HomeUI);
+                ViewInventoryUI inventoryUI = new ViewInventoryUI(HomeUI, LoginUI);
                 HomeUI.setVisible(false);
             }
 

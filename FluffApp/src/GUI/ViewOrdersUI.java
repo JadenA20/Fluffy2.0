@@ -9,6 +9,14 @@ import BusinessLogic.Comparator.OrderIDSort;
 import BusinessLogic.Comparator.StatusSort;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
+import BusinessLogic.Order.Order;
+import BusinessLogic.Order.OrderController;
+import Database.UserTableController;
+import Security.Admin;
+import Security.Authorization;
+import Security.Baker;
+
+
 
 import java.awt.*;
 import java.awt.event.*;
@@ -529,12 +537,12 @@ public class ViewOrdersUI extends JFrame{
 
                     if(!isInteger(ID)){
                         JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                         return;
                     }
                     Order order = new Order();
@@ -570,12 +578,12 @@ public class ViewOrdersUI extends JFrame{
 
                 else{
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "Please Enter An ID", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                 }
 
             }
@@ -588,24 +596,24 @@ public class ViewOrdersUI extends JFrame{
 
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
-                     iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                     iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                     return;
                 }
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                     return;
                 }
 
@@ -649,33 +657,33 @@ public class ViewOrdersUI extends JFrame{
                             if(success == true){
                                 addToTable();
                                 JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                iDField.setText(" ");
-                                priceField.setText(" ");
-                                deadlineField.setText(" ");
-                                descArea.setText(" ");
-                                noteArea.setText(" ");
-                                addressArea.setText(" ");
+                                iDField.setText("");
+                                priceField.setText("");
+                                deadlineField.setText("");
+                                descArea.setText("");
+                                noteArea.setText("");
+                                addressArea.setText("");
                             }
 
                             else{
                                 JOptionPane.showMessageDialog(ViewOrdersUI.this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE);
-                                iDField.setText(" ");
-                                priceField.setText(" ");
-                                deadlineField.setText(" ");
-                                descArea.setText(" ");
-                                noteArea.setText(" ");
-                                addressArea.setText(" ");
+                                iDField.setText("");
+                                priceField.setText("");
+                                deadlineField.setText("");
+                                descArea.setText("");
+                                noteArea.setText("");
+                                addressArea.setText("");
                             }
                          }
 
                         else{
                     
-                            iDField.setText(" ");
-                            priceField.setText(" ");
-                            deadlineField.setText(" ");
-                            descArea.setText(" ");
-                            noteArea.setText(" ");
-                            addressArea.setText(" ");
+                            iDField.setText("");
+                            priceField.setText("");
+                            deadlineField.setText("");
+                            descArea.setText("");
+                            noteArea.setText("");
+                            addressArea.setText("");
                         }
 
                     }
@@ -707,24 +715,24 @@ public class ViewOrdersUI extends JFrame{
 
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                     return;
                 }
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                     return;
                 }
 
@@ -747,12 +755,12 @@ public class ViewOrdersUI extends JFrame{
                             if(success == true){
                                 addToTable();                                
                                 JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Completed", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                iDField.setText(" ");
-                                priceField.setText(" ");
-                                deadlineField.setText(" ");
-                                descArea.setText(" ");
-                                noteArea.setText(" ");
-                                addressArea.setText(" ");
+                                iDField.setText("");
+                                priceField.setText("");
+                                deadlineField.setText("");
+                                descArea.setText("");
+                                noteArea.setText("");
+                                addressArea.setText("");
                             }
 
                             else{
@@ -763,12 +771,12 @@ public class ViewOrdersUI extends JFrame{
 
                         else
                         {
-                            iDField.setText(" ");
-                            priceField.setText(" ");
-                            deadlineField.setText(" ");
-                            descArea.setText(" ");
-                            noteArea.setText(" ");
-                            addressArea.setText(" ");
+                            iDField.setText("");
+                            priceField.setText("");
+                            deadlineField.setText("");
+                            descArea.setText("");
+                            noteArea.setText("");
+                            addressArea.setText("");
                         }
 
 
@@ -796,6 +804,7 @@ public class ViewOrdersUI extends JFrame{
         }
 
         if(e.getSource() == deleteOrder){
+    
             Boolean exists = false;
             Boolean success = false;
             ArrayList<Order> orders = new ArrayList<Order>();
@@ -804,24 +813,24 @@ public class ViewOrdersUI extends JFrame{
 
                 if(iDField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "No Order Selected.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                    iDField.setText("");
+                    priceField.setText("");
+                    deadlineField.setText("");
+                    descArea.setText("");
+                    noteArea.setText("");
+                    addressArea.setText("");
                     return;
                 }
 
                 String ID = iDField.getText().strip();
                 if(!isInteger(ID)){
                     JOptionPane.showMessageDialog(ViewOrdersUI.this, "ID Must Be An Integer.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                    iDField.setText("");
+                    priceField.setText("");
+                    deadlineField.setText("");
+                    descArea.setText("");
+                    noteArea.setText("");
+                    addressArea.setText("");
                     return;
                 }
 
@@ -835,30 +844,67 @@ public class ViewOrdersUI extends JFrame{
                     }
 
                     if(exists == true){
-                        int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+                       
+                        Baker current_baker = login.getCurrentUser();
+                        boolean authorized = new Authorization().authorizeBaker(current_baker);
+                        String key;
+                        Boolean matched = false;
+                        Boolean checked = false;
+                        
+                        
+                        if (authorized == false) {
+            
+                           key = JOptionPane.showInputDialog(null, "Admin Not Detected. Please Enter Admin Passkey.", JOptionPane.INFORMATION_MESSAGE);
+            
+                           boolean match = new Authorization().checkPasskey(key);
+            
+                            if (match == false) {
 
-                        if(response == JOptionPane.YES_OPTION){
-                            success = new OrderController().cancelOrder(iD);
-                            if(success == true){
-                                addToTable();
-                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                iDField.setText(" ");
-                                priceField.setText(" ");
-                                deadlineField.setText(" ");
-                                descArea.setText(" ");
-                                noteArea.setText(" ");
-                                addressArea.setText(" ");
-
+                                JOptionPane.showMessageDialog(ViewOrdersUI.this, "Invalid Passkey. Please Try Again.", "Error", JOptionPane.ERROR_MESSAGE);
+                                
                             }
+
+                            else {
+                            
+                                matched = true;
+                            } 
+                        
+                        } 
+                       
+                        else {
+
+                            checked = true;
+                       
                         }
 
-                        else{
-                            iDField.setText(" ");
-                            priceField.setText(" ");
-                            deadlineField.setText(" ");
-                            descArea.setText(" ");
-                            noteArea.setText(" ");
-                            addressArea.setText(" ");
+                        if ((checked == true) || (matched == true)) {
+
+                            int response = JOptionPane.showConfirmDialog(ViewOrdersUI.this, "Cancel Order?");
+
+                            if(response == JOptionPane.YES_OPTION){
+                                success = new OrderController().cancelOrder(iD);
+                                if(success == true){
+                                    addToTable();
+                                    JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Cancelled.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                    iDField.setText("");
+                                    priceField.setText("");
+                                    deadlineField.setText("");
+                                    descArea.setText("");
+                                    noteArea.setText("");
+                                    addressArea.setText("");
+
+                                }
+                            }
+
+                            else{
+                                iDField.setText("");
+                                priceField.setText("");
+                                deadlineField.setText("");
+                                descArea.setText("");
+                                noteArea.setText("");
+                                addressArea.setText("");
+                            }
+
                         }
 
                     }
@@ -866,12 +912,12 @@ public class ViewOrdersUI extends JFrame{
                     else{
 
                         JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist.", "Error", JOptionPane.ERROR_MESSAGE);
-                        iDField.setText(" ");
-                        priceField.setText(" ");
-                        deadlineField.setText(" ");
-                        descArea.setText(" ");
-                        noteArea.setText(" ");
-                        addressArea.setText(" ");
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                         
 
                     }

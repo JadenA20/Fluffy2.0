@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import BusinessLogic.Comparator.DeadlineSort;
 import BusinessLogic.Comparator.OrderIDSort;
 import BusinessLogic.Comparator.StatusSort;
+import BusinessLogic.Inventory.InventoryController;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
 import BusinessLogic.Order.Order;
@@ -846,7 +847,7 @@ public class ViewOrdersUI extends JFrame{
                     if(exists == true){
                        
                         Baker current_baker = login.getCurrentUser();
-                        boolean authorized = new Authorization().authorizeBaker(current_baker);
+                        boolean authorized = new OrderController().authorized(current_baker);
                         String key;
                         Boolean matched = false;
                         Boolean checked = false;

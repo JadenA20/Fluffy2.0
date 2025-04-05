@@ -142,20 +142,24 @@ public class LoginUI extends JFrame {
            
             if(e.getSource() == login){
                 //Get username and password
-                String username = usernameField.getText();
-                String password = passwordField.getText();
+                String username = usernameField.getText().strip();
+                String password = passwordField.getText().strip();
 
                 if((username.equals("")) || (password.equals(""))){
                     //Error message
                     JOptionPane.showMessageDialog(LoginUI.this, "Empty Field Detected, Please Enter Login Information.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 else{
                     LoginController conn = new LoginController();
                     Object [] array = conn.login(username, password);
+                    System.out.println(array[1]);
+                    System.out.println(array[0]);
 
                     if(array[1] == null){
                         JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
 
                     }
 
@@ -170,6 +174,7 @@ public class LoginUI extends JFrame {
                         else{
                             
                             JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
                         }
 
                     }

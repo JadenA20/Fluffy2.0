@@ -511,7 +511,7 @@ public class ViewInventoryUI extends JFrame {
                        if(exists == true){
 
                             Baker current_baker = login.getCurrentUser();
-                            boolean authorized = new Authorization().authorizeBaker(current_baker);
+                            Boolean authorized = new InventoryController().authorized(current_baker);
                             String key;
                             Boolean matched = false;
                             Boolean checked = false;
@@ -521,7 +521,7 @@ public class ViewInventoryUI extends JFrame {
                 
                                 key = JOptionPane.showInputDialog(null, "Admin Not Detected. Please Enter Admin Passkey.", JOptionPane.ERROR_MESSAGE);
                     
-                                boolean match = new Authorization().checkPasskey(key);
+                                Boolean match = new Authorization().checkPasskey(key);
                     
                                     if (match == false) {
 

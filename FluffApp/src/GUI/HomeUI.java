@@ -1,7 +1,7 @@
 package GUI;
 
-import Security.Authorization;
 import Security.Baker;
+import Security.RegisterController;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -148,7 +148,7 @@ public class HomeUI extends JFrame {
           
             if (e.getSource() == register){
                 Baker current_baker = LoginUI.getCurrentUser();
-                Boolean authorized = new Authorization().authorizeBaker(current_baker);
+                Boolean authorized = new RegisterController().authorized(current_baker);
 
                 if(authorized){
                     setVisible(false);

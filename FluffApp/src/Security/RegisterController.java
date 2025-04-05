@@ -54,4 +54,11 @@ public class RegisterController {
 
     }
 
+
+    public Boolean authorized(Baker baker){
+        return new Authorization().authorizeBaker(baker);
+    }
+
 }
+
+

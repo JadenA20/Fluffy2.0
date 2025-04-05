@@ -3,6 +3,7 @@ package BusinessLogic.Inventory;
 import java.util.ArrayList;
 
 import Database.InventoryTableController;
+import Security.*;
 
 public class InventoryController {
 
@@ -31,6 +32,10 @@ public class InventoryController {
     public Boolean deleteItem(int iD){
         String query = String.format("DELETE FROM inventory WHERE Item_ID = '%d'", iD);
         return new InventoryTableController().delete(query);
+    }
+
+    public Boolean authorized(Baker baker){
+        return new Authorization().authorizeBaker(baker);
     }
 
 }

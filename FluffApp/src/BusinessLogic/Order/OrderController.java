@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import Database.CustomerTableController;
 import Database.OrderTableController;
+import Security.Authorization;
+import Security.Baker;
 
 
 public class OrderController{
@@ -127,6 +129,10 @@ public class OrderController{
         ArrayList<Customer> cust = new ArrayList<Customer>();
         cust =  new CustomerTableController().getCustomers("select * from customers");
         return cust;
+    }
+
+     public Boolean authorized(Baker baker){
+        return new Authorization().authorizeBaker(baker);
     }
 
 }

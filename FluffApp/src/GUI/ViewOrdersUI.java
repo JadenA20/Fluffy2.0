@@ -559,6 +559,12 @@ public class ViewOrdersUI extends JFrame{
 
                     if (exists == false){
                         JOptionPane.showMessageDialog(ViewOrdersUI.this, "Order Does Not Exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                        iDField.setText("");
+                        priceField.setText("");
+                        deadlineField.setText("");
+                        descArea.setText("");
+                        noteArea.setText("");
+                        addressArea.setText("");
                         return;
 
                     }

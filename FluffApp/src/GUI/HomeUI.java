@@ -1,11 +1,14 @@
 package GUI;
 
+import Security.Authorization;
+import Security.Baker;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
 
 
 
@@ -23,7 +26,7 @@ public class HomeUI extends JFrame {
     public HomeUI(LoginUI LoginUI){
 
         this.HomeUI = this;
-        LoginUI = LoginUI;
+        this.LoginUI = LoginUI;
        
        //Set Panel Title
        
@@ -144,12 +147,23 @@ public class HomeUI extends JFrame {
         public void actionPerformed(ActionEvent e) {
           
             if (e.getSource() == register){
+                Baker current_baker = LoginUI.getCurrentUser();
+                Boolean authorized = new Authorization().authorizeBaker(current_baker);
+
+                if(authorized){
+                    setVisible(false);
+                    RegisterUI registerUI = new RegisterUI(HomeUI.this, LoginUI);
+                    
+                }
+
+                else{
+                    JOptionPane.showMessageDialog(HomeUI.this, "You Are Not Authorized To Complete This Task", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+
 
               //Need to check baker account type first
             
-
-                setVisible(false);
-                RegisterUI registerUI = new RegisterUI(HomeUI.this, LoginUI);
     
             }
 

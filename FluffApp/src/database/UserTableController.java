@@ -68,7 +68,7 @@ import Security.*;
             ResultSet result = stmt.executeQuery(query);
 
             while(result.next()){
-                Admin a = new Admin(result.getString("FirstName"), result.getString("LastName"), result.getString("Username"),result.getString("Password"), result.getInt("PassKey"));
+                Admin a = new Admin(result.getString("FirstName"), result.getString("LastName"), result.getString("Username"),result.getString("Password"), result.getInt("AdminKey"));
                 admins.add(a);
                            
             }

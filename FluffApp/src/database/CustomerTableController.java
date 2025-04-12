@@ -1,11 +1,10 @@
 package Database;
+import BusinessLogic.Order.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import BusinessLogic.Order.*;
 
 public class CustomerTableController {
     private String url = "jdbc:mysql://127.0.0.1:3306/fluffy_schema";
@@ -15,6 +14,10 @@ public class CustomerTableController {
 
     public ArrayList<Customer> getCustomers(String query){
         customers = new ArrayList<Customer>();
+
+        for(Customer c: customers){
+            System.out.println(c);
+        }
 
         try{
             Connection connection = DriverManager.getConnection(url, user, password);

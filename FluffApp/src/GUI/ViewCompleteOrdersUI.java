@@ -11,8 +11,10 @@ import javax.swing.table.DefaultTableModel;
 
 import BusinessLogic.Comparator.DateCompletedSort;
 import BusinessLogic.Comparator.OrderIDSort;
+import BusinessLogic.Order.Customer;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
+import Database.CustomerTableController;
 
 public class ViewCompleteOrdersUI extends JFrame{
     private JLabel title;
@@ -23,6 +25,15 @@ public class ViewCompleteOrdersUI extends JFrame{
 
     public ViewCompleteOrdersUI(ViewOrdersUI ViewOrdersUI){
         this.ViewOrdersUI = ViewOrdersUI;
+        /*ArrayList<Order> completedOrders = new OrderController().viewCompletedOrders();
+        for(Order o: completedOrders){
+            System.out.println(o);
+        }
+
+        ArrayList<Customer> customers = new CustomerTableController().getCustomers("Select * from customers");
+        for(Customer c: customers){
+            System.out.println(c);
+        }*/
 
         // Instantiate Elements
         title = new JLabel("Completed Orders");

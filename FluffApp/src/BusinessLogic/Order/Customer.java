@@ -1,5 +1,4 @@
 package BusinessLogic.Order;
-import java.util.ArrayList;
 
 public class Customer {
     private String fname, lname, phone, method;
@@ -23,7 +22,7 @@ public class Customer {
     }*/
 
     public String toString() {
-        return "Customer{id=" + this.iD + ", name='" + getName() + "', email='}";
+        return getID() + ":" + getFname() + ":" + getLname() + ":" + getPhone() + ":" + getMethod();
     }
 
 

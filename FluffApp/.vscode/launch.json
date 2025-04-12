@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FluffySweetTreats",
+            "request": "launch",
+            "mainClass": "GUI.FluffySweetTreats",
+            "projectName": "FluffApp_4e2fbfa9"
+        },
+        {
+            "type": "java",
             "name": "FluffySweetTreatUI",
             "request": "launch",
             "mainClass": "GUI.FluffySweetTreatUI",

@@ -1,34 +1,24 @@
 package GUI;
 
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.table.DefaultTableModel;
-
 import BusinessLogic.Comparator.DeadlineSort;
 import BusinessLogic.Comparator.OrderIDSort;
 import BusinessLogic.Comparator.StatusSort;
-import BusinessLogic.Inventory.InventoryController;
+import BusinessLogic.Order.Customer;
 import BusinessLogic.Order.Order;
 import BusinessLogic.Order.OrderController;
-import BusinessLogic.Order.Order;
-import BusinessLogic.Order.OrderController;
-import Database.UserTableController;
-import Security.Admin;
+import Database.CustomerTableController;
 import Security.Authorization;
 import Security.Baker;
-
-
-
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.regex.Pattern;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class ViewOrdersUI extends JFrame{
 
@@ -47,7 +37,16 @@ public class ViewOrdersUI extends JFrame{
     public ViewOrdersUI(HomeUI Home, LoginUI Login)
     {
 
-        currentOrders = new OrderController().viewCurrentOrders();
+        /*currentOrders = new OrderController().viewCurrentOrders();
+        for(Order o: currentOrders){
+            System.out.println(o);
+        }
+
+        ArrayList<Customer> customers = new CustomerTableController().getCustomers("Select * from customers");
+        for(Customer c: customers){
+            System.out.println(c);
+        }*/
+        
 
         this.home = Home;
         this.login = Login;

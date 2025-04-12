@@ -111,7 +111,8 @@ public class Order {
     }
 
     public String toString() {
-        return "Order{id=" + this.iD + ", cust='" + getCustomer() + "', email='}";
+        String str = getID() + ":" + getCustomer().getName() + ":" + getFlavour() + ":" + getDescription() + ":" + getEvent() + ":" + getNotes() + ":" + getDeliveryAddress() + ":" + getDeadline() + ":" + getPrice() + ":" + getPayStat() ;
+        return str;
     }
 
 

@@ -1,9 +1,8 @@
 //Last Modified: March 11th, 2025
 
 package Security;
-import java.util.ArrayList;
-
 import Database.UserTableController;
+import java.util.ArrayList;
 
 public class LoginController {
     
@@ -25,6 +24,7 @@ public class LoginController {
             }
 
         }
+
 
         return ob;
     //Gets saved registration information from database and checks for a match

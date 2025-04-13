@@ -13,7 +13,8 @@ import javax.swing.*;
 public class RegisterUI extends JFrame{
     private JButton register, back;
     private JPanel breakPanel, contentPanel;
-    private JTextField fname, lname, username, password, confirm_pass;
+    private JTextField fname, lname, username;
+    private JPasswordField password, confirm_pass;
     private JLabel title, fnameLabel, lnameLabel, userLabel, passLabel, confirmLabel, roleLabel;
     private JComboBox<String> role;
     private String[] roles = {"Admin", "Normal"};
@@ -22,6 +23,7 @@ public class RegisterUI extends JFrame{
 
     public RegisterUI(HomeUI HomeUI, LoginUI LoginUI){
         this.HomeUI = HomeUI;
+        this.LoginUI = LoginUI;
 
         //Set Panel Title
         setTitle("Register Baker");
@@ -116,7 +118,7 @@ public class RegisterUI extends JFrame{
         contentPanel.add(passLabel, con);
 
 
-        password = new JTextField(20);                            //Password TextField
+        password = new JPasswordField(20);                            //Password TextField
         password.setForeground(new Color(100, 67, 59));
         password.setFont(ver1);
         password.setBounds(20, 170, 300, 50);
@@ -134,7 +136,7 @@ public class RegisterUI extends JFrame{
         contentPanel.add(confirmLabel, con);
 
 
-        confirm_pass = new JTextField(20);                         //Confirm Password TextField
+        confirm_pass = new JPasswordField(20);                         //Confirm Password TextField
         confirm_pass.setForeground(new Color(100, 67, 59));
         confirm_pass.setFont(ver1);
         confirm_pass.setBounds(20, 170, 300, 50);
@@ -151,6 +153,8 @@ public class RegisterUI extends JFrame{
         contentPanel.add(roleLabel, con);
 
         role = new JComboBox<>(roles);                                     //Role Dropdown
+        role.setForeground(new Color(100, 67, 59));
+        role.setFont(new Font("Courier New", 1, 14));
         role.setFont(ver1);
         role.setBounds(150,50,130,15);
         con.gridx = 1;
@@ -223,31 +227,76 @@ public class RegisterUI extends JFrame{
 
                 if((first.equals("")) || (last.equals("") || (user.equals("")) || (pass.equals("")) || (confirmed.equals("")))){
                     //Error message
-                    JOptionPane.showMessageDialog(RegisterUI.this, "Empty field detected. Please recheck registration information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(RegisterUI.this, "Empty Field Detected. Please Complete All Fields.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
                 else {
 
                     if(check == true){
+                        
 
                         if (type.equals("Normal")){
+                            if(rgCon.bakerExists(user, pass)){
+                                JOptionPane.showMessageDialog(RegisterUI.this, "User Already Exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            Boolean success = false;
 
                             RegisterController conn = new RegisterController();
-                            conn.registerBaker(first, last, user, pass);
-                            JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
-                            RegisterUI.this.setVisible(false);
-                            HomeUI.setVisible(true);
+                            success = conn.registerBaker(first, last, user, pass);
+
+                            if(success){
+
+                                JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
+                                RegisterUI.this.setVisible(false);
+                                HomeUI.setVisible(true);
+
+                            }
+
+                            else{
+
+                                JOptionPane.showMessageDialog(RegisterUI.this, "Registration Unsuccessful", "Success", JOptionPane.NO_OPTION);
+                                RegisterUI.this.setVisible(false);
+                                HomeUI.setVisible(true);
+
+                            }
+                            
 
                             
     
                         }
                         else {
+                            if(rgCon.bakerExists(user, pass)){
+                                JOptionPane.showMessageDialog(RegisterUI.this, "User Already Exists.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            Boolean success = false;
 
                             RegisterController conn = new RegisterController();
-                            conn.registerAdmin(first, last, user, pass);
-                            JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
-                            RegisterUI.this.setVisible(false);
-                            HomeUI.setVisible(true);
+                            Object[] obj = conn.registerAdmin(first, last, user, pass);
+                            success = (boolean)obj[0];
+                            int passkey = (int)obj[1];
+
+                            String message = "Your Admin Key is: " + String.valueOf(passkey);
+
+                            if(success){
+                                JOptionPane.showMessageDialog(RegisterUI.this, "Registration Successful", "Success", JOptionPane.NO_OPTION);
+                                JOptionPane.showMessageDialog(RegisterUI.this, message, "Success", JOptionPane.NO_OPTION);
+
+                                RegisterUI.this.setVisible(false);
+                                HomeUI.setVisible(true);
+                            }
+
+                            else{
+
+                                JOptionPane.showMessageDialog(RegisterUI.this, "Registration Unsuccessful", "Success", JOptionPane.NO_OPTION);
+                                RegisterUI.this.setVisible(false);
+                                HomeUI.setVisible(true);
+
+                            }
+                           
 
 
                         }
@@ -255,7 +304,7 @@ public class RegisterUI extends JFrame{
                         
                     }
                     else {
-                        JOptionPane.showMessageDialog(RegisterUI.this, "Password are not a match.", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(RegisterUI.this, "Passwords Do Not Match.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }  
@@ -263,8 +312,9 @@ public class RegisterUI extends JFrame{
             }
 
             else if(e.getSource() == back){
-                HomeUI home = new HomeUI(LoginUI);
+                //HomeUI home = new HomeUI(LoginUI);
                 setVisible(false);
+                HomeUI.setVisible(true);
             }      
 
         }

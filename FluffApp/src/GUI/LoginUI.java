@@ -142,29 +142,45 @@ public class LoginUI extends JFrame {
            
             if(e.getSource() == login){
                 //Get username and password
-                String username = usernameField.getText();
-                String password = new String(pwordField.getPassword());
+                String username = usernameField.getText().strip();
+                String password = passwordField.getText().strip();
 
                 if((username.equals("")) || (password.equals(""))){
                     //Error message
-                    JOptionPane.showMessageDialog(LoginUI.this, "Empty field detected. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginUI.this, "Empty Field Detected, Please Enter Login Information.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
                 else{
-
                     LoginController conn = new LoginController();
                     Object [] array = conn.login(username, password);
-                    if(array[0].equals(true)){
-                        currentUser = (Baker)array[1];
-                        System.out.println(currentUser);
-                        HomeUI home = new HomeUI(LoginUI.this);
-                        setVisible(false);
+                    System.out.println(array[1]);
+                    System.out.println(array[0]);
+
+                    if(array[1] == null){
+                        JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+
                     }
 
                     else{
-                        
-                        JOptionPane.showMessageDialog(LoginUI.this, "User not found. Please recheck login information entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                        if(array[0].equals(true)){
+                            currentUser = (Baker)array[1];
+                            //System.out.println(currentUser);
+                            HomeUI home = new HomeUI(LoginUI.this);
+                            setVisible(false);
+                        }
+    
+                        else{
+                            
+                            JOptionPane.showMessageDialog(LoginUI.this, "Incorrect Username Or Password.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
                     }
+
+                    
+                    
 
                 }     
 

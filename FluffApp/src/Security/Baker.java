@@ -31,6 +31,10 @@ public class Baker {
         return this.password;
     }
 
+    public String toString(){
+        return getUserName() + ": " + getPassword();
+    }
+
     
     
 

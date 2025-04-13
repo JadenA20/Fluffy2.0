@@ -33,33 +33,11 @@ public class Order {
         
     }
 
-    public void setStatus(){
-        this.status = false;
-        this.date_cmp = getCurrentDate();
-
-        if (this.payStat != "Complete"){
-            this.payStat = "Complete";
-        }  
+    public Order(){
+        
     }
 
-    public void setPaymentStatus(String p){
-        this.payStat = p;
-    }
-
-    public void setDescription(String desc){
-        this.desc = desc;
-
-    }
-
-    public void setEven (String event){
-        this.event = event;
-
-    }
-
-    public void setPrice(float p){
-        this.price = p;
-    }
-
+    
     public String getEvent(){
         return this.event;
 
@@ -110,18 +88,16 @@ public class Order {
         return this.price;
     }
 
+    public String getDeliveryAddress(){
+        return this.deliveryAddress;
+    }
+
     public String getDateCreated(){
         return this.date_cr;
     }
 
     public String getDateCompleted(){
-        if(isOpen() == false){
-            return this.date_cmp;
-        }
-
-        else{
-            return "Order not completed";
-        }
+        return this.date_cmp;
        
     }
 
@@ -135,7 +111,8 @@ public class Order {
     }
 
     public String toString() {
-        return "Order{id=" + this.iD + ", cust='" + getCustomer() + "', email='}";
+        String str = getID() + ":" + getCustomer().getName() + ":" + getFlavour() + ":" + getDescription() + ":" + getEvent() + ":" + getNotes() + ":" + getDeliveryAddress() + ":" + getDeadline() + ":" + getPrice() + ":" + getPayStat() ;
+        return str;
     }
 
 

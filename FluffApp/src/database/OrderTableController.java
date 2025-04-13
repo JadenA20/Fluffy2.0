@@ -73,6 +73,51 @@ public class OrderTableController {
     }
 
 
+    public Boolean editOrder(String query){
+
+        int rowsUpdated = 0;
+
+        try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement stmt = connection.createStatement();
+            rowsUpdated = stmt.executeUpdate(query);
+
+            
+        } 
+        
+        catch (Exception e) {
+            System.out.println(e);
+            // TODO: handle exception
+        }
+
+        return rowsUpdated > 0;
+
+    }
+
+    public Boolean deleteOrder(String query){
+
+        int rowsUpdated = 0;
+
+        try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            Statement stmt = connection.createStatement();
+            rowsUpdated = stmt.executeUpdate(query);
+
+            
+        } 
+        
+        catch (Exception e) {
+            System.out.println(e);
+            // TODO: handle exception
+        }
+
+        return rowsUpdated > 0;
+        
+    }
+
+
     /*public String toString(Date date) {
         return "Customer{id=" + date.getYear()+ ", name='" + getName() + "', email='}";
     }*/

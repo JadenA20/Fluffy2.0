@@ -1,33 +1,48 @@
-package Inventory;
+package BusinessLogic.Inventory;
 
 public class Inventory {
-//Inventory
-private int id,stockCount,priorityStatus;
-private static int count =1;
-private String name, item_desc;
+    private int iD, quantity;
+    private String name, description, itemType, priorityStatus;
 
-public Inventory(int id, int stockCount, int priorityStatus,String name, String item_desc){
-    this.id=count;
-    this.stockCount = stockCount;
-    this.priorityStatus = priorityStatus;
-    this.name = name;
-    this.item_desc = item_desc;
-    count++;
-}
+    public Inventory(int iD, int quantity, String name, String description, String type, String status){
+        this.iD = iD;
+        this.quantity = quantity;
+        this.name = name;
+        this.description = description;
+        this.itemType = type;
+        this.priorityStatus = status;
+    }
 
-public void setStockCount(int newStockCount){
-    this.stockCount = newStockCount;
-}
+    public Inventory(){
 
-public void setPriorityStatus(int newPriority){
-    this.priorityStatus = newPriority;
-}
+    }
 
-public void setName(String newName){
-    this.name = newName;
-}
-public void setDescription(String newDescrip){
-    this.item_desc = newDescrip;
-}
+    public int getID(){
+        return this.iD;
+    }
+
+    public int getQuantity(){
+        return this.quantity;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    
+    public String getDesc(){
+        return this.description;
+    }
+    
+    public String getStatus(){
+        return this.priorityStatus;
+    }
+    
+    public String getType(){
+        return this.itemType;
+    }
+
+    
+
 
 }
